@@ -111,14 +111,8 @@ function SalarySlipPage() {
               style={{ background: "var(--gradient-accent)", clipPath: "polygon(30% 0, 100% 0, 100% 100%, 0% 100%)" }}
             />
             <div className="relative flex items-center justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <div className="rounded-lg bg-white/95 px-3 py-2">
-                  <img src={logo} alt="Technorizen" className="h-10 w-auto" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold tracking-tight">Technorizen</h1>
-                  <p className="text-xs text-white/85">Cradle of Technologies</p>
-                </div>
+              <div className="rounded-lg bg-white/95 px-4 py-2.5 shadow-sm">
+                <img src={logo} alt="Technorizen" className="h-12 w-auto" />
               </div>
               <div className="text-right">
                 <h2 className="text-xl font-bold uppercase tracking-widest">Salary Slip</h2>
