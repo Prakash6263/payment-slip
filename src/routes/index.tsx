@@ -423,3 +423,184 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
+// ----------------------- DOC (Word HTML) builder -----------------------
+function buildDocHtml(args: {
+  month: string;
+  emp: Record<string, string>;
+  earnings: Record<string, string>;
+  deductions: Record<string, string>;
+  grossEarnings: number;
+  totalDeductions: number;
+  netSalary: number;
+  words: string;
+  logoSrc: string;
+}) {
+  const fmt = (n: number) =>
+    n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const BLUE = "#1d4fd8";
+  const BLUE_DEEP = "#0b2f8a";
+  const RED = "#e0451c";
+  const ORANGE = "#f08a2a";
+  const TEXT = "#1a2540";
+  const MUTED = "#6b7693";
+  const BORDER = "#dbe1ee";
+
+  const empRows = [
+    ["Employee Name", args.emp.name || ""],
+    ["Employee ID", args.emp.id || ""],
+    ["Designation", args.emp.designation || ""],
+    ["Department", args.emp.department || ""],
+    ["Date of Joining", args.emp.doj || ""],
+    ["Paid Days", args.emp.paidDays || ""],
+    ["Leave Days", args.emp.leaveDays || ""],
+  ];
+  const earnRows = [
+    ["Basic Salary", "basic"],
+    ["House Rent Allowance (HRA)", "hra"],
+    ["Conveyance Allowance", "conveyance"],
+    ["Medical Allowance", "medical"],
+    ["Special Allowance", "special"],
+    ["Bonus / Incentive", "bonus"],
+  ];
+  const dedRows = [
+    ["Provident Fund (PF)", "pf"],
+    ["ESIC", "esic"],
+    ["Professional Tax (PT)", "pt"],
+    ["Leave Deduction", "leave"],
+    ["Other Deduction", "other"],
+  ];
+  const valOrDash = (v: string) =>
+    v ? Number(v).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—";
+
+  const empTable = `
+    <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;border:1px solid ${BORDER};">
+      ${empRows
+        .map(
+          ([k, v], i) => `
+        <tr style="background:${i % 2 ? "#f7f9ff" : "#ffffff"};">
+          <td width="35%" style="color:${MUTED};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${k}</td>
+          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;border-bottom:1px solid ${BORDER};">${v || "&nbsp;"}</td>
+        </tr>`
+        )
+        .join("")}
+    </table>`;
+
+  const moneyTable = (
+    title: string,
+    rows: string[][],
+    values: Record<string, string>,
+    totalLabel: string,
+    total: number,
+    headerBg: string
+  ) => `
+    <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;border:1px solid ${BORDER};">
+      <tr>
+        <td colspan="2" style="background:${headerBg};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">
+          <table width="100%" cellpadding="0" cellspacing="0"><tr>
+            <td style="color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;">${title}</td>
+            <td align="right" style="color:#ffffffcc;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1.5px;">AMOUNT (₹)</td>
+          </tr></table>
+        </td>
+      </tr>
+      ${rows
+        .map(
+          ([label, key], i) => `
+        <tr style="background:${i % 2 ? "#f7f9ff" : "#ffffff"};">
+          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${label}</td>
+          <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${valOrDash(values[key] || "")}</td>
+        </tr>`
+        )
+        .join("")}
+      <tr style="background:#eef2fb;">
+        <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;">${totalLabel}</td>
+        <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;">${fmt(total)}</td>
+      </tr>
+    </table>`;
+
+  const sectionHeading = (t: string, color: string) => `
+    <table cellpadding="0" cellspacing="0" style="margin:18px 0 8px 0;">
+      <tr>
+        <td width="6" style="background:${color};">&nbsp;</td>
+        <td style="padding-left:8px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2px;color:${TEXT};text-transform:uppercase;">${t}</td>
+      </tr>
+    </table>`;
+
+  return `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Salary Slip — Technorizen</title>
+<!--[if gte mso 9]><xml>
+<w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument>
+</xml><![endif]-->
+<style>
+@page WordSection1 { size: 8.27in 11.69in; margin: 0.5in 0.5in 0.5in 0.5in; }
+div.WordSection1 { page: WordSection1; }
+body { font-family: Arial, Helvetica, sans-serif; color:${TEXT}; }
+</style>
+</head>
+<body>
+<div class="WordSection1">
+  <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${BORDER};">
+    <tr>
+      <td style="background:linear-gradient(135deg, ${BLUE}, ${BLUE_DEEP});background-color:${BLUE};padding:18px 22px;" bgcolor="${BLUE}">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td>
+              <table cellpadding="0" cellspacing="0"><tr>
+                <td style="background:#ffffff;padding:6px 10px;border-radius:6px;">
+                  <img src="${args.logoSrc}" alt="Technorizen" height="44" style="display:block;height:44px;"/>
+                </td>
+              </tr></table>
+            </td>
+            <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+              <div style="font-size:18px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;">Salary Slip</div>
+              <div style="font-size:12px;color:#ffffffcc;margin-top:4px;">Month: <b style="color:#fff;">${args.month || "—"}</b></div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="padding:20px 22px;">
+      ${sectionHeading("Employee Details", BLUE)}
+      ${empTable}
+
+      ${sectionHeading("Earnings & Deductions", RED)}
+      <table width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td width="49%" valign="top">${moneyTable("Earnings", earnRows, args.earnings, "Gross Earnings", args.grossEarnings, BLUE)}</td>
+        <td width="2%">&nbsp;</td>
+        <td width="49%" valign="top">${moneyTable("Deductions", dedRows, args.deductions, "Total Deductions", args.totalDeductions, RED)}</td>
+      </tr></table>
+
+      ${sectionHeading("Net Salary", BLUE)}
+      <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse:collapse;border:1px solid ${BORDER};">
+        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">Gross Salary</td>
+            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.grossEarnings)}</td></tr>
+        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">Less: Total Deductions</td>
+            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.totalDeductions)}</td></tr>
+        <tr bgcolor="${BLUE}"><td style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">Net Salary / In-Hand</td>
+            <td align="right" style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:bold;">₹ ${fmt(args.netSalary)}</td></tr>
+      </table>
+      <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:${TEXT};margin-top:10px;">
+        <b>Net Salary in Words: </b><i style="color:${MUTED};">${args.words || "—"}</i>
+      </p>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:50px;">
+        <tr>
+          <td width="50%" align="center" style="border-top:1px solid ${TEXT};padding-top:6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employer Signature</td>
+          <td width="10%">&nbsp;</td>
+          <td width="40%" align="center" style="border-top:1px solid ${TEXT};padding-top:6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employee Signature</td>
+        </tr>
+      </table>
+
+      <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:${MUTED};letter-spacing:3px;text-transform:uppercase;margin-top:30px;">
+        This is a system-generated salary slip — Technorizen
+      </p>
+    </td></tr>
+  </table>
+</div>
+</body>
+</html>`;
+}
