@@ -571,9 +571,16 @@ body { font-family: Arial, Helvetica, sans-serif; color:${TEXT}; }
               </tr></table>
             </td>
             <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
-              <div style="font-size:18px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;">Salary Slip</div>
-              <div style="font-size:12px;color:#ffffffcc;margin-top:4px;">Month: <b style="color:#fff;">${args.month || "—"}</b></div>
+              <div style="font-size:16px;font-weight:bold;">Technorizen Software Solutions Pvt. Ltd.</div>
+              <div style="font-size:11px;color:#ffffffcc;margin-top:3px;">402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002</div>
+              <div style="font-size:11px;color:#ffffff;font-weight:600;">www.technorizen.com</div>
             </td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="8" cellspacing="0" style="margin-top:14px;background:rgba(0,0,0,0.18);" bgcolor="${BLUE_DEEP}">
+          <tr>
+            <td style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;">Salary Slip</td>
+            <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;">Month: <b>${args.month || "—"}</b></td>
           </tr>
         </table>
       </td>
