@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import logo from "@/assets/technorizen-logo.png";
 
 export const Route = createFileRoute("/")({
@@ -61,6 +61,8 @@ function SalarySlipPage() {
   const [emp, setEmp] = useState<Record<string, string>>({});
   const [earnings, setEarnings] = useState<Record<string, string>>({});
   const [deductions, setDeductions] = useState<Record<string, string>>({});
+  const slipRef = useRef<HTMLElement>(null);
+  const [busy, setBusy] = useState<"pdf" | "doc" | null>(null);
 
   const grossEarnings = useMemo(
     () => earningsFields.reduce((s, f) => s + (parseFloat(earnings[f.key]) || 0), 0),
@@ -75,6 +77,85 @@ function SalarySlipPage() {
   const fmt = (n: number) =>
     n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+  const downloadPDF = async () => {
+    if (!slipRef.current) return;
+    setBusy("pdf");
+    try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas-pro"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(slipRef.current, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+      });
+      const img = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const margin = 24;
+      const w = pageW - margin * 2;
+      const h = (canvas.height * w) / canvas.width;
+      let y = margin;
+      if (h <= pageH - margin * 2) {
+        pdf.addImage(img, "PNG", margin, y, w, h);
+      } else {
+        // Multi-page slicing
+        const pageHeightPx = ((pageH - margin * 2) * canvas.width) / w;
+        let renderedPx = 0;
+        const tmp = document.createElement("canvas");
+        const ctx = tmp.getContext("2d")!;
+        tmp.width = canvas.width;
+        while (renderedPx < canvas.height) {
+          const sliceH = Math.min(pageHeightPx, canvas.height - renderedPx);
+          tmp.height = sliceH;
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, tmp.width, tmp.height);
+          ctx.drawImage(canvas, 0, renderedPx, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+          const sliceImg = tmp.toDataURL("image/png");
+          const sliceRenderedH = (sliceH * w) / canvas.width;
+          pdf.addImage(sliceImg, "PNG", margin, margin, w, sliceRenderedH);
+          renderedPx += sliceH;
+          if (renderedPx < canvas.height) pdf.addPage();
+        }
+      }
+      pdf.save(`Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.pdf`);
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const downloadDOC = () => {
+    setBusy("doc");
+    try {
+      const html = buildDocHtml({
+        month,
+        emp,
+        earnings,
+        deductions,
+        grossEarnings,
+        totalDeductions,
+        netSalary,
+        words: netSalary > 0 ? numberToWords(netSalary) : "",
+        logoSrc: window.location.origin + logo,
+      });
+      const blob = new Blob(["\ufeff", html], {
+        type: "application/msword",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } finally {
+      setBusy(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Top toolbar */}
@@ -86,18 +167,36 @@ function SalarySlipPage() {
               Salary Slip Generator
             </span>
           </div>
-          <button
-            onClick={() => window.print()}
-            className="rounded-md px-4 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-soft)] transition-transform hover:scale-[1.02]"
-            style={{ background: "var(--gradient-brand)" }}
-          >
-            Print / Save PDF
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => window.print()}
+              className="rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+            >
+              Print
+            </button>
+            <button
+              onClick={downloadDOC}
+              disabled={!!busy}
+              className="rounded-md px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-soft)] transition-transform hover:scale-[1.02] disabled:opacity-60"
+              style={{ background: "var(--gradient-accent)" }}
+            >
+              {busy === "doc" ? "Preparing…" : "Download DOC"}
+            </button>
+            <button
+              onClick={downloadPDF}
+              disabled={!!busy}
+              className="rounded-md px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-soft)] transition-transform hover:scale-[1.02] disabled:opacity-60"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              {busy === "pdf" ? "Generating…" : "Download PDF"}
+            </button>
+          </div>
         </div>
       </div>
 
       <main className="mx-auto max-w-5xl px-4 py-8">
         <article
+          ref={slipRef}
           className="print-page mx-auto overflow-hidden rounded-2xl bg-card shadow-[var(--shadow-elegant)]"
           style={{ borderTop: "6px solid transparent", borderImage: "var(--gradient-brand) 1" }}
         >
