@@ -202,7 +202,7 @@ function SalarySlipPage() {
         >
           {/* Header */}
           <header
-            className="relative px-8 py-7 text-white"
+            className="relative px-8 pt-7 pb-0 text-white"
             style={{ background: "var(--gradient-brand)" }}
           >
             <div
@@ -213,17 +213,32 @@ function SalarySlipPage() {
               <div className="rounded-lg bg-white/95 px-4 py-2.5 shadow-sm">
                 <img src={logo} alt="Technorizen" className="h-12 w-auto" />
               </div>
-              <div className="text-right">
-                <h2 className="text-xl font-bold uppercase tracking-widest">Salary Slip</h2>
-                <div className="mt-2 flex items-center justify-end gap-2 text-sm">
-                  <span className="text-white/80">Month:</span>
-                  <input
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-                    placeholder="e.g. November 2025"
-                    className="w-44 rounded-md border border-white/30 bg-white/10 px-2 py-1 text-sm text-white placeholder:text-white/60 outline-none focus:bg-white/20 print:border-0 print:bg-transparent"
-                  />
-                </div>
+              <div className="text-right leading-tight">
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight">
+                  Technorizen Software Solutions Pvt. Ltd.
+                </h1>
+                <p className="mt-1 text-[11px] sm:text-xs text-white/85">
+                  402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002
+                </p>
+                <p className="text-[11px] sm:text-xs font-medium text-white/95">
+                  www.technorizen.com
+                </p>
+              </div>
+            </div>
+
+            {/* Title band */}
+            <div className="relative mt-5 -mx-8 flex items-center justify-between gap-4 border-t border-white/20 bg-black/15 px-8 py-3">
+              <h2 className="text-base sm:text-lg font-bold uppercase tracking-[0.35em]">
+                Salary Slip
+              </h2>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-white/80">Month:</span>
+                <input
+                  value={month}
+                  onChange={(e) => setMonth(e.target.value)}
+                  placeholder="e.g. November 2025"
+                  className="w-48 rounded-md border border-white/30 bg-white/10 px-2 py-1 text-sm text-white placeholder:text-white/60 outline-none focus:bg-white/20 print:border-0 print:bg-transparent"
+                />
               </div>
             </div>
           </header>
