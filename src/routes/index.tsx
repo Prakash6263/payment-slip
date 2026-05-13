@@ -114,51 +114,63 @@ function SalarySlipPage() {
     if (!slipRef.current) return;
     setBusy("doc");
     try {
-      // Render the exact same UI to a canvas (identical to the PDF export)
-      const { default: html2canvas } = await import("html2canvas-pro");
+      // Render the exact same UI to a canvas, then place that image into a real .docx file.
+      const [{ default: html2canvas }, { Document, ImageRun, Packer, Paragraph }] = await Promise.all([
+        import("html2canvas-pro"),
+        import("docx"),
+      ]);
       const canvas = await html2canvas(slipRef.current, {
         scale: 2,
         backgroundColor: "#ffffff",
         useCORS: true,
       });
-      const imgData = canvas.toDataURL("image/png");
+      const pngBytes = await new Promise<Uint8Array>((resolve) => {
+        canvas.toBlob(async (blob) => {
+          const buffer = await blob!.arrayBuffer();
+          resolve(new Uint8Array(buffer));
+        }, "image/png");
+      });
 
-      // A4 portrait inner width ~ 7.27in after 0.3in margins. Scale image to fit.
-      const pageInnerWidthIn = 7.9;
-      const ratio = canvas.height / canvas.width;
-      const imgWidthIn = pageInnerWidthIn;
-      const imgHeightIn = +(imgWidthIn * ratio).toFixed(2);
+      const maxWidth = 736;
+      const maxHeight = 1064;
+      const scale = Math.min(maxWidth / canvas.width, maxHeight / canvas.height);
+      const imageWidth = Math.floor(canvas.width * scale);
+      const imageHeight = Math.floor(canvas.height * scale);
 
-      const html = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<html xmlns:o="urn:schemas-microsoft-com:office:office"
-      xmlns:w="urn:schemas-microsoft-com:office:word"
-      xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-<meta charset="utf-8" />
-<title>Technorizen Salary Slip</title>
-<!--[if gte mso 9]>
-<xml>
-  <w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument>
-</xml>
-<![endif]-->
-<style>
-@page WordSection1 { size: 8.27in 11.69in; margin: 0.3in 0.3in 0.3in 0.3in; }
-div.WordSection1 { page: WordSection1; }
-body { margin:0; padding:0; }
-</style>
-</head>
-<body>
-<div class="WordSection1" style="text-align:center;">
-  <img src="${imgData}" width="${imgWidthIn * 96}" height="${imgHeightIn * 96}"
-       style="width:${imgWidthIn}in;height:${imgHeightIn}in;display:block;margin:0 auto;" />
-</div>
-</body></html>`;
+      const doc = new Document({
+        sections: [
+          {
+            properties: {
+              page: {
+                size: { width: 11906, height: 16838 },
+                margin: { top: 432, right: 432, bottom: 432, left: 432 },
+              },
+            },
+            children: [
+              new Paragraph({
+                children: [
+                  new ImageRun({
+                    type: "png",
+                    data: pngBytes,
+                    transformation: { width: imageWidth, height: imageHeight },
+                    altText: {
+                      title: "Technorizen Salary Slip",
+                      description: "Rendered salary slip matching the on-screen design",
+                      name: "Technorizen Salary Slip",
+                    },
+                  }),
+                ],
+              }),
+            ],
+          },
+        ],
+      });
 
-      const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+      const blob = await Packer.toBlob(doc);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.doc`;
+      a.download = `Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.docx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
