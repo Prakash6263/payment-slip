@@ -546,32 +546,32 @@ tr { page-break-inside: avoid; page-break-after: auto; }
 <div class="WordSection1">
   <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${BORDER};">
     <tr>
-      <td style="background:linear-gradient(135deg, ${BLUE}, ${BLUE_DEEP});background-color:${BLUE};padding:18px 22px;" bgcolor="${BLUE}">
+      <td style="background:linear-gradient(135deg, ${BLUE}, ${BLUE_DEEP});background-color:${BLUE};padding:12px 16px;" bgcolor="${BLUE}">
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
-            <td>
+            <td width="35%">
               <table cellpadding="0" cellspacing="0"><tr>
-                <td style="background:#ffffff;padding:6px 10px;border-radius:6px;">
-                  <img src="${args.logoSrc}" alt="Technorizen" height="44" style="display:block;height:44px;"/>
+                <td style="background:#ffffff;padding:5px 9px;border-radius:6px;">
+                  <img src="${args.logoSrc}" alt="Technorizen" height="38" style="display:block;height:38px;"/>
                 </td>
               </tr></table>
             </td>
             <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
-              <div style="font-size:16px;font-weight:bold;">Technorizen Software Solutions Pvt. Ltd.</div>
-              <div style="font-size:11px;color:#ffffffcc;margin-top:3px;">402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002</div>
-              <div style="font-size:11px;color:#ffffff;font-weight:600;">www.technorizen.com</div>
+              <div style="font-size:14px;font-weight:bold;">Technorizen Software Solutions Pvt. Ltd.</div>
+              <div style="font-size:10px;color:#ffffffcc;margin-top:2px;">402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002</div>
+              <div style="font-size:10px;color:#ffffff;font-weight:600;">www.technorizen.com</div>
             </td>
           </tr>
         </table>
-        <table width="100%" cellpadding="8" cellspacing="0" style="margin-top:14px;background:rgba(0,0,0,0.18);" bgcolor="${BLUE_DEEP}">
+        <table width="100%" cellpadding="6" cellspacing="0" style="margin-top:10px;background:rgba(0,0,0,0.18);" bgcolor="${BLUE_DEEP}">
           <tr>
-            <td style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;">Salary Slip</td>
-            <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;">Month: <b>${args.month || "—"}</b></td>
+            <td style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;">Salary Slip</td>
+            <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:11px;">Month: <b>${args.month || "—"}</b></td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="padding:20px 22px;">
+    <tr><td style="padding:12px 16px;">
       ${sectionHeading("Employee Details", BLUE)}
       ${empTable}
 
@@ -583,27 +583,27 @@ tr { page-break-inside: avoid; page-break-after: auto; }
       </tr></table>
 
       ${sectionHeading("Net Salary", BLUE)}
-      <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse:collapse;border:1px solid ${BORDER};">
-        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">Gross Salary</td>
-            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.grossEarnings)}</td></tr>
-        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">Less: Total Deductions</td>
-            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.totalDeductions)}</td></tr>
-        <tr bgcolor="${BLUE}"><td style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">Net Salary / In-Hand</td>
-            <td align="right" style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:bold;">₹ ${fmt(args.netSalary)}</td></tr>
+      <table width="100%" cellpadding="5" cellspacing="0" style="border-collapse:collapse;border:1px solid ${BORDER};">
+        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">Gross Salary</td>
+            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.grossEarnings)}</td></tr>
+        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">Less: Total Deductions</td>
+            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.totalDeductions)}</td></tr>
+        <tr bgcolor="${BLUE}"><td style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">Net Salary / In-Hand</td>
+            <td align="right" style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;">₹ ${fmt(args.netSalary)}</td></tr>
       </table>
-      <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:${TEXT};margin-top:10px;">
+      <p style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${TEXT};margin:8px 0 0 0;">
         <b>Net Salary in Words: </b><i style="color:${MUTED};">${args.words || "—"}</i>
       </p>
 
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:50px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:30px;">
         <tr>
-          <td width="50%" align="center" style="border-top:1px solid ${TEXT};padding-top:6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employer Signature</td>
+          <td width="45%" align="center" style="border-top:1px solid ${TEXT};padding-top:5px;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employer Signature</td>
           <td width="10%">&nbsp;</td>
-          <td width="40%" align="center" style="border-top:1px solid ${TEXT};padding-top:6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employee Signature</td>
+          <td width="45%" align="center" style="border-top:1px solid ${TEXT};padding-top:5px;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employee Signature</td>
         </tr>
       </table>
 
-      <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:${MUTED};letter-spacing:3px;text-transform:uppercase;margin-top:30px;">
+      <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;color:${MUTED};letter-spacing:3px;text-transform:uppercase;margin:18px 0 0 0;">
         This is a system-generated salary slip — Technorizen
       </p>
     </td></tr>
