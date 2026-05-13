@@ -474,13 +474,13 @@ function buildDocHtml(args: {
     v ? Number(v).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—";
 
   const empTable = `
-    <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;border:1px solid ${BORDER};">
+    <table width="100%" cellspacing="0" cellpadding="5" style="border-collapse:collapse;border:1px solid ${BORDER};">
       ${empRows
         .map(
           ([k, v], i) => `
         <tr style="background:${i % 2 ? "#f7f9ff" : "#ffffff"};">
-          <td width="35%" style="color:${MUTED};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${k}</td>
-          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;border-bottom:1px solid ${BORDER};">${v || "&nbsp;"}</td>
+          <td width="35%" style="color:${MUTED};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">${k}</td>
+          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:600;border-bottom:1px solid ${BORDER};">${v || "&nbsp;"}</td>
         </tr>`
         )
         .join("")}
@@ -494,12 +494,12 @@ function buildDocHtml(args: {
     total: number,
     headerBg: string
   ) => `
-    <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;border:1px solid ${BORDER};">
+    <table width="100%" cellspacing="0" cellpadding="5" style="border-collapse:collapse;border:1px solid ${BORDER};">
       <tr>
         <td colspan="2" style="background:${headerBg};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">
           <table width="100%" cellpadding="0" cellspacing="0"><tr>
-            <td style="color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;">${title}</td>
-            <td align="right" style="color:#ffffffcc;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1.5px;">AMOUNT (₹)</td>
+            <td style="color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;">${title}</td>
+            <td align="right" style="color:#ffffffcc;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:1.5px;">AMOUNT (₹)</td>
           </tr></table>
         </td>
       </tr>
@@ -507,22 +507,22 @@ function buildDocHtml(args: {
         .map(
           ([label, key], i) => `
         <tr style="background:${i % 2 ? "#f7f9ff" : "#ffffff"};">
-          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${label}</td>
-          <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${valOrDash(values[key] || "")}</td>
+          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">${label}</td>
+          <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">${valOrDash(values[key] || "")}</td>
         </tr>`
         )
         .join("")}
       <tr style="background:#eef2fb;">
-        <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;">${totalLabel}</td>
-        <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;">${fmt(total)}</td>
+        <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;">${totalLabel}</td>
+        <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;">${fmt(total)}</td>
       </tr>
     </table>`;
 
   const sectionHeading = (t: string, color: string) => `
-    <table cellpadding="0" cellspacing="0" style="margin:18px 0 8px 0;">
+    <table cellpadding="0" cellspacing="0" style="margin:10px 0 5px 0;">
       <tr>
-        <td width="6" style="background:${color};">&nbsp;</td>
-        <td style="padding-left:8px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2px;color:${TEXT};text-transform:uppercase;">${t}</td>
+        <td width="5" style="background:${color};">&nbsp;</td>
+        <td style="padding-left:8px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;color:${TEXT};text-transform:uppercase;">${t}</td>
       </tr>
     </table>`;
 
