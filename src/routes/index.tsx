@@ -94,32 +94,16 @@ function SalarySlipPage() {
       const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
-      const margin = 24;
-      const w = pageW - margin * 2;
-      const h = (canvas.height * w) / canvas.width;
-      let y = margin;
-      if (h <= pageH - margin * 2) {
-        pdf.addImage(img, "PNG", margin, y, w, h);
-      } else {
-        // Multi-page slicing
-        const pageHeightPx = ((pageH - margin * 2) * canvas.width) / w;
-        let renderedPx = 0;
-        const tmp = document.createElement("canvas");
-        const ctx = tmp.getContext("2d")!;
-        tmp.width = canvas.width;
-        while (renderedPx < canvas.height) {
-          const sliceH = Math.min(pageHeightPx, canvas.height - renderedPx);
-          tmp.height = sliceH;
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, tmp.width, tmp.height);
-          ctx.drawImage(canvas, 0, renderedPx, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
-          const sliceImg = tmp.toDataURL("image/png");
-          const sliceRenderedH = (sliceH * w) / canvas.width;
-          pdf.addImage(sliceImg, "PNG", margin, margin, w, sliceRenderedH);
-          renderedPx += sliceH;
-          if (renderedPx < canvas.height) pdf.addPage();
-        }
-      }
+      const margin = 18;
+      const maxW = pageW - margin * 2;
+      const maxH = pageH - margin * 2;
+      // Fit entire slip on a single page, preserving aspect ratio.
+      const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+      const w = canvas.width * ratio;
+      const h = canvas.height * ratio;
+      const x = (pageW - w) / 2;
+      const y = (pageH - h) / 2;
+      pdf.addImage(img, "PNG", x, y, w, h);
       pdf.save(`Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.pdf`);
     } finally {
       setBusy(null);
