@@ -94,32 +94,16 @@ function SalarySlipPage() {
       const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
-      const margin = 24;
-      const w = pageW - margin * 2;
-      const h = (canvas.height * w) / canvas.width;
-      let y = margin;
-      if (h <= pageH - margin * 2) {
-        pdf.addImage(img, "PNG", margin, y, w, h);
-      } else {
-        // Multi-page slicing
-        const pageHeightPx = ((pageH - margin * 2) * canvas.width) / w;
-        let renderedPx = 0;
-        const tmp = document.createElement("canvas");
-        const ctx = tmp.getContext("2d")!;
-        tmp.width = canvas.width;
-        while (renderedPx < canvas.height) {
-          const sliceH = Math.min(pageHeightPx, canvas.height - renderedPx);
-          tmp.height = sliceH;
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, tmp.width, tmp.height);
-          ctx.drawImage(canvas, 0, renderedPx, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
-          const sliceImg = tmp.toDataURL("image/png");
-          const sliceRenderedH = (sliceH * w) / canvas.width;
-          pdf.addImage(sliceImg, "PNG", margin, margin, w, sliceRenderedH);
-          renderedPx += sliceH;
-          if (renderedPx < canvas.height) pdf.addPage();
-        }
-      }
+      const margin = 18;
+      const maxW = pageW - margin * 2;
+      const maxH = pageH - margin * 2;
+      // Fit entire slip on a single page, preserving aspect ratio.
+      const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+      const w = canvas.width * ratio;
+      const h = canvas.height * ratio;
+      const x = (pageW - w) / 2;
+      const y = (pageH - h) / 2;
+      pdf.addImage(img, "PNG", x, y, w, h);
       pdf.save(`Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.pdf`);
     } finally {
       setBusy(null);
@@ -490,13 +474,13 @@ function buildDocHtml(args: {
     v ? Number(v).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—";
 
   const empTable = `
-    <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;border:1px solid ${BORDER};">
+    <table width="100%" cellspacing="0" cellpadding="5" style="border-collapse:collapse;border:1px solid ${BORDER};">
       ${empRows
         .map(
           ([k, v], i) => `
         <tr style="background:${i % 2 ? "#f7f9ff" : "#ffffff"};">
-          <td width="35%" style="color:${MUTED};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${k}</td>
-          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;border-bottom:1px solid ${BORDER};">${v || "&nbsp;"}</td>
+          <td width="35%" style="color:${MUTED};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">${k}</td>
+          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:600;border-bottom:1px solid ${BORDER};">${v || "&nbsp;"}</td>
         </tr>`
         )
         .join("")}
@@ -510,12 +494,12 @@ function buildDocHtml(args: {
     total: number,
     headerBg: string
   ) => `
-    <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;border:1px solid ${BORDER};">
+    <table width="100%" cellspacing="0" cellpadding="5" style="border-collapse:collapse;border:1px solid ${BORDER};">
       <tr>
         <td colspan="2" style="background:${headerBg};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">
           <table width="100%" cellpadding="0" cellspacing="0"><tr>
-            <td style="color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;">${title}</td>
-            <td align="right" style="color:#ffffffcc;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1.5px;">AMOUNT (₹)</td>
+            <td style="color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;">${title}</td>
+            <td align="right" style="color:#ffffffcc;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:1.5px;">AMOUNT (₹)</td>
           </tr></table>
         </td>
       </tr>
@@ -523,22 +507,22 @@ function buildDocHtml(args: {
         .map(
           ([label, key], i) => `
         <tr style="background:${i % 2 ? "#f7f9ff" : "#ffffff"};">
-          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${label}</td>
-          <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">${valOrDash(values[key] || "")}</td>
+          <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">${label}</td>
+          <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">${valOrDash(values[key] || "")}</td>
         </tr>`
         )
         .join("")}
       <tr style="background:#eef2fb;">
-        <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;">${totalLabel}</td>
-        <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;">${fmt(total)}</td>
+        <td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;">${totalLabel}</td>
+        <td align="right" style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;">${fmt(total)}</td>
       </tr>
     </table>`;
 
   const sectionHeading = (t: string, color: string) => `
-    <table cellpadding="0" cellspacing="0" style="margin:18px 0 8px 0;">
+    <table cellpadding="0" cellspacing="0" style="margin:10px 0 5px 0;">
       <tr>
-        <td width="6" style="background:${color};">&nbsp;</td>
-        <td style="padding-left:8px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2px;color:${TEXT};text-transform:uppercase;">${t}</td>
+        <td width="5" style="background:${color};">&nbsp;</td>
+        <td style="padding-left:8px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;color:${TEXT};text-transform:uppercase;">${t}</td>
       </tr>
     </table>`;
 
@@ -551,41 +535,43 @@ function buildDocHtml(args: {
 <w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument>
 </xml><![endif]-->
 <style>
-@page WordSection1 { size: 8.27in 11.69in; margin: 0.5in 0.5in 0.5in 0.5in; }
+@page WordSection1 { size: 8.27in 11.69in; margin: 0.3in 0.35in 0.3in 0.35in; mso-page-orientation: portrait; }
 div.WordSection1 { page: WordSection1; }
-body { font-family: Arial, Helvetica, sans-serif; color:${TEXT}; }
+body { font-family: Arial, Helvetica, sans-serif; color:${TEXT}; font-size:11px; }
+table { page-break-inside: avoid; }
+tr { page-break-inside: avoid; page-break-after: auto; }
 </style>
 </head>
 <body>
 <div class="WordSection1">
   <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${BORDER};">
     <tr>
-      <td style="background:linear-gradient(135deg, ${BLUE}, ${BLUE_DEEP});background-color:${BLUE};padding:18px 22px;" bgcolor="${BLUE}">
+      <td style="background:linear-gradient(135deg, ${BLUE}, ${BLUE_DEEP});background-color:${BLUE};padding:12px 16px;" bgcolor="${BLUE}">
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
-            <td>
+            <td width="35%">
               <table cellpadding="0" cellspacing="0"><tr>
-                <td style="background:#ffffff;padding:6px 10px;border-radius:6px;">
-                  <img src="${args.logoSrc}" alt="Technorizen" height="44" style="display:block;height:44px;"/>
+                <td style="background:#ffffff;padding:5px 9px;border-radius:6px;">
+                  <img src="${args.logoSrc}" alt="Technorizen" height="38" style="display:block;height:38px;"/>
                 </td>
               </tr></table>
             </td>
             <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
-              <div style="font-size:16px;font-weight:bold;">Technorizen Software Solutions Pvt. Ltd.</div>
-              <div style="font-size:11px;color:#ffffffcc;margin-top:3px;">402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002</div>
-              <div style="font-size:11px;color:#ffffff;font-weight:600;">www.technorizen.com</div>
+              <div style="font-size:14px;font-weight:bold;">Technorizen Software Solutions Pvt. Ltd.</div>
+              <div style="font-size:10px;color:#ffffffcc;margin-top:2px;">402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002</div>
+              <div style="font-size:10px;color:#ffffff;font-weight:600;">www.technorizen.com</div>
             </td>
           </tr>
         </table>
-        <table width="100%" cellpadding="8" cellspacing="0" style="margin-top:14px;background:rgba(0,0,0,0.18);" bgcolor="${BLUE_DEEP}">
+        <table width="100%" cellpadding="6" cellspacing="0" style="margin-top:10px;background:rgba(0,0,0,0.18);" bgcolor="${BLUE_DEEP}">
           <tr>
-            <td style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;">Salary Slip</td>
-            <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;">Month: <b>${args.month || "—"}</b></td>
+            <td style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:4px;text-transform:uppercase;">Salary Slip</td>
+            <td align="right" style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:11px;">Month: <b>${args.month || "—"}</b></td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr><td style="padding:20px 22px;">
+    <tr><td style="padding:12px 16px;">
       ${sectionHeading("Employee Details", BLUE)}
       ${empTable}
 
@@ -597,27 +583,27 @@ body { font-family: Arial, Helvetica, sans-serif; color:${TEXT}; }
       </tr></table>
 
       ${sectionHeading("Net Salary", BLUE)}
-      <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse:collapse;border:1px solid ${BORDER};">
-        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">Gross Salary</td>
-            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.grossEarnings)}</td></tr>
-        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:12px;border-bottom:1px solid ${BORDER};">Less: Total Deductions</td>
-            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.totalDeductions)}</td></tr>
-        <tr bgcolor="${BLUE}"><td style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">Net Salary / In-Hand</td>
-            <td align="right" style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:bold;">₹ ${fmt(args.netSalary)}</td></tr>
+      <table width="100%" cellpadding="5" cellspacing="0" style="border-collapse:collapse;border:1px solid ${BORDER};">
+        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">Gross Salary</td>
+            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.grossEarnings)}</td></tr>
+        <tr><td style="color:${TEXT};font-family:Arial,Helvetica,sans-serif;font-size:11px;border-bottom:1px solid ${BORDER};">Less: Total Deductions</td>
+            <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;border-bottom:1px solid ${BORDER};">₹ ${fmt(args.totalDeductions)}</td></tr>
+        <tr bgcolor="${BLUE}"><td style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">Net Salary / In-Hand</td>
+            <td align="right" style="background:${BLUE};color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;">₹ ${fmt(args.netSalary)}</td></tr>
       </table>
-      <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:${TEXT};margin-top:10px;">
+      <p style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${TEXT};margin:8px 0 0 0;">
         <b>Net Salary in Words: </b><i style="color:${MUTED};">${args.words || "—"}</i>
       </p>
 
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:50px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:30px;">
         <tr>
-          <td width="50%" align="center" style="border-top:1px solid ${TEXT};padding-top:6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employer Signature</td>
+          <td width="45%" align="center" style="border-top:1px solid ${TEXT};padding-top:5px;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employer Signature</td>
           <td width="10%">&nbsp;</td>
-          <td width="40%" align="center" style="border-top:1px solid ${TEXT};padding-top:6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employee Signature</td>
+          <td width="45%" align="center" style="border-top:1px solid ${TEXT};padding-top:5px;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:${MUTED};text-transform:uppercase;letter-spacing:2px;">Employee Signature</td>
         </tr>
       </table>
 
-      <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:${MUTED};letter-spacing:3px;text-transform:uppercase;margin-top:30px;">
+      <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;color:${MUTED};letter-spacing:3px;text-transform:uppercase;margin:18px 0 0 0;">
         This is a system-generated salary slip — Technorizen
       </p>
     </td></tr>
