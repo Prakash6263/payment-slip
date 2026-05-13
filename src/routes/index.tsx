@@ -535,9 +535,11 @@ function buildDocHtml(args: {
 <w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument>
 </xml><![endif]-->
 <style>
-@page WordSection1 { size: 8.27in 11.69in; margin: 0.5in 0.5in 0.5in 0.5in; }
+@page WordSection1 { size: 8.27in 11.69in; margin: 0.3in 0.35in 0.3in 0.35in; mso-page-orientation: portrait; }
 div.WordSection1 { page: WordSection1; }
-body { font-family: Arial, Helvetica, sans-serif; color:${TEXT}; }
+body { font-family: Arial, Helvetica, sans-serif; color:${TEXT}; font-size:11px; }
+table { page-break-inside: avoid; }
+tr { page-break-inside: avoid; page-break-after: auto; }
 </style>
 </head>
 <body>
