@@ -110,23 +110,51 @@ function SalarySlipPage() {
     }
   };
 
-  const downloadDOC = () => {
+  const downloadDOC = async () => {
+    if (!slipRef.current) return;
     setBusy("doc");
     try {
-      const html = buildDocHtml({
-        month,
-        emp,
-        earnings,
-        deductions,
-        grossEarnings,
-        totalDeductions,
-        netSalary,
-        words: netSalary > 0 ? numberToWords(netSalary) : "",
-        logoSrc: window.location.origin + logo,
+      // Render the exact same UI to a canvas (identical to the PDF export)
+      const { default: html2canvas } = await import("html2canvas-pro");
+      const canvas = await html2canvas(slipRef.current, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true,
       });
-      const blob = new Blob(["\ufeff", html], {
-        type: "application/msword",
-      });
+      const imgData = canvas.toDataURL("image/png");
+
+      // A4 portrait inner width ~ 7.27in after 0.3in margins. Scale image to fit.
+      const pageInnerWidthIn = 7.9;
+      const ratio = canvas.height / canvas.width;
+      const imgWidthIn = pageInnerWidthIn;
+      const imgHeightIn = +(imgWidthIn * ratio).toFixed(2);
+
+      const html = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8" />
+<title>Technorizen Salary Slip</title>
+<!--[if gte mso 9]>
+<xml>
+  <w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page WordSection1 { size: 8.27in 11.69in; margin: 0.3in 0.3in 0.3in 0.3in; }
+div.WordSection1 { page: WordSection1; }
+body { margin:0; padding:0; }
+</style>
+</head>
+<body>
+<div class="WordSection1" style="text-align:center;">
+  <img src="${imgData}" width="${imgWidthIn * 96}" height="${imgHeightIn * 96}"
+       style="width:${imgWidthIn}in;height:${imgHeightIn}in;display:block;margin:0 auto;" />
+</div>
+</body></html>`;
+
+      const blob = new Blob(["\ufeff", html], { type: "application/msword" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
