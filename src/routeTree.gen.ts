@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedSlipsNewRouteImport } from './routes/_authenticated/slips/new'
+import { Route as AuthenticatedSlipsIdRouteImport } from './routes/_authenticated/slips/$id'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -33,15 +34,22 @@ const AuthenticatedSlipsNewRoute = AuthenticatedSlipsNewRouteImport.update({
   path: '/slips/new',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedSlipsIdRoute = AuthenticatedSlipsIdRouteImport.update({
+  id: '/slips/$id',
+  path: '/slips/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
+  '/slips/$id': typeof AuthenticatedSlipsIdRoute
   '/slips/new': typeof AuthenticatedSlipsNewRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexRoute
+  '/slips/$id': typeof AuthenticatedSlipsIdRoute
   '/slips/new': typeof AuthenticatedSlipsNewRoute
 }
 export interface FileRoutesById {
@@ -49,18 +57,20 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/slips/$id': typeof AuthenticatedSlipsIdRoute
   '/_authenticated/slips/new': typeof AuthenticatedSlipsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/slips/new'
+  fullPaths: '/' | '/login' | '/slips/$id' | '/slips/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/slips/new'
+  to: '/login' | '/' | '/slips/$id' | '/slips/new'
   id:
     | '__root__'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/'
+    | '/_authenticated/slips/$id'
     | '/_authenticated/slips/new'
   fileRoutesById: FileRoutesById
 }
@@ -99,16 +109,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSlipsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/slips/$id': {
+      id: '/_authenticated/slips/$id'
+      path: '/slips/$id'
+      fullPath: '/slips/$id'
+      preLoaderRoute: typeof AuthenticatedSlipsIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedSlipsIdRoute: typeof AuthenticatedSlipsIdRoute
   AuthenticatedSlipsNewRoute: typeof AuthenticatedSlipsNewRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedSlipsIdRoute: AuthenticatedSlipsIdRoute,
   AuthenticatedSlipsNewRoute: AuthenticatedSlipsNewRoute,
 }
 
@@ -123,3 +142,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
