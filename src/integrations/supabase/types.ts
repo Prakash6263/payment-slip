@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      salary_slips: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          deductions: Json
+          earnings: Json
+          emp: Json
+          employee_id: string
+          employee_name: string
+          id: string
+          month: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          deductions?: Json
+          earnings?: Json
+          emp?: Json
+          employee_id?: string
+          employee_name?: string
+          id?: string
+          month: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          deductions?: Json
+          earnings?: Json
+          emp?: Json
+          employee_id?: string
+          employee_name?: string
+          id?: string
+          month?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
