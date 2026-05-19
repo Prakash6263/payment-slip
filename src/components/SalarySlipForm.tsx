@@ -96,8 +96,6 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
     }
     setBusy("save");
     try {
-      const { data: userRes } = await supabase.auth.getUser();
-      const userId = userRes.user?.id ?? null;
       const payload = {
         month,
         employee_name: emp.name ?? "",
@@ -113,7 +111,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
       } else {
         const { data, error } = await supabase
           .from("salary_slips")
-          .insert({ ...payload, created_by: userId })
+          .insert(payload)
           .select("id")
           .single();
         if (error) throw error;
