@@ -48,6 +48,66 @@ const numberToWords = (num: number): string => {
   return inWords(Math.floor(num)) + " Rupees Only";
 };
 
+const exportTheme = {
+  "--background": "#f8fafc",
+  "--foreground": "#172033",
+  "--card": "#ffffff",
+  "--card-foreground": "#172033",
+  "--muted": "#f1f5f9",
+  "--muted-foreground": "#64748b",
+  "--border": "#dbe4ee",
+  "--primary": "#2563eb",
+  "--primary-foreground": "#ffffff",
+  "--secondary": "#ea580c",
+  "--secondary-foreground": "#ffffff",
+  "--gradient-brand": "linear-gradient(135deg, #2563eb, #1d4ed8)",
+  "--gradient-accent": "linear-gradient(135deg, #ea580c, #f59e0b)",
+  "--shadow-elegant": "0 20px 50px -20px rgba(30, 64, 175, 0.35)",
+  "--shadow-soft": "0 4px 20px -8px rgba(30, 64, 175, 0.15)",
+};
+
+const colorAliases = [
+  "background", "foreground", "card", "card-foreground", "muted", "muted-foreground",
+  "border", "primary", "primary-foreground", "secondary", "secondary-foreground",
+] as const;
+
+const waitForExportAssets = async (root: HTMLElement) => {
+  await document.fonts?.ready;
+  await Promise.all(
+    Array.from(root.querySelectorAll("img")).map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise<void>((resolve) => {
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+      });
+    })
+  );
+};
+
+const createExportClone = (source: HTMLElement) => {
+  const width = Math.ceil(source.getBoundingClientRect().width);
+  const wrapper = document.createElement("div");
+  Object.assign(wrapper.style, {
+    position: "fixed",
+    top: "0",
+    left: "-10000px",
+    width: `${width}px`,
+    background: "#ffffff",
+    pointerEvents: "none",
+    zIndex: "-1",
+  });
+  Object.entries(exportTheme).forEach(([key, value]) => wrapper.style.setProperty(key, value));
+  colorAliases.forEach((name) => wrapper.style.setProperty(`--color-${name}`, `var(--${name})`));
+
+  const clone = source.cloneNode(true) as HTMLElement;
+  clone.style.width = `${width}px`;
+  clone.style.maxWidth = "none";
+  clone.classList.add("export-capture");
+  wrapper.appendChild(clone);
+  document.body.appendChild(wrapper);
+  return { wrapper, clone };
+};
+
 export type SlipData = {
   id?: string;
   month: string;
