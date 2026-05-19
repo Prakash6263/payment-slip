@@ -160,3 +160,14 @@
   .no-print { display: none !important; }
   .print-page { box-shadow: none !important; margin: 0 !important; }
 }
+
+.export-capture,
+.export-capture * {
+  color-scheme: light !important;
+}
+
+.export-capture input {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
+}
