@@ -9,136 +9,97 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
-import { Route as AuthenticatedSlipsNewRouteImport } from './routes/_authenticated/slips/new'
-import { Route as AuthenticatedSlipsIdRouteImport } from './routes/_authenticated/slips/$id'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as SlipsNewRouteImport } from './routes/slips/new'
+import { Route as SlipsIdRouteImport } from './routes/slips/$id'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedSlipsNewRoute = AuthenticatedSlipsNewRouteImport.update({
+const SlipsNewRoute = SlipsNewRouteImport.update({
   id: '/slips/new',
   path: '/slips/new',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedSlipsIdRoute = AuthenticatedSlipsIdRouteImport.update({
+const SlipsIdRoute = SlipsIdRouteImport.update({
   id: '/slips/$id',
   path: '/slips/$id',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthenticatedIndexRoute
-  '/login': typeof LoginRoute
-  '/slips/$id': typeof AuthenticatedSlipsIdRoute
-  '/slips/new': typeof AuthenticatedSlipsNewRoute
+  '/': typeof IndexRoute
+  '/slips/$id': typeof SlipsIdRoute
+  '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRoutesByTo {
-  '/login': typeof LoginRoute
-  '/': typeof AuthenticatedIndexRoute
-  '/slips/$id': typeof AuthenticatedSlipsIdRoute
-  '/slips/new': typeof AuthenticatedSlipsNewRoute
+  '/': typeof IndexRoute
+  '/slips/$id': typeof SlipsIdRoute
+  '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/_authenticated/': typeof AuthenticatedIndexRoute
-  '/_authenticated/slips/$id': typeof AuthenticatedSlipsIdRoute
-  '/_authenticated/slips/new': typeof AuthenticatedSlipsNewRoute
+  '/': typeof IndexRoute
+  '/slips/$id': typeof SlipsIdRoute
+  '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/slips/$id' | '/slips/new'
+  fullPaths: '/' | '/slips/$id' | '/slips/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/slips/$id' | '/slips/new'
-  id:
-    | '__root__'
-    | '/_authenticated'
-    | '/login'
-    | '/_authenticated/'
-    | '/_authenticated/slips/$id'
-    | '/_authenticated/slips/new'
+  to: '/' | '/slips/$id' | '/slips/new'
+  id: '__root__' | '/' | '/slips/$id' | '/slips/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  LoginRoute: typeof LoginRoute
+  IndexRoute: typeof IndexRoute
+  SlipsIdRoute: typeof SlipsIdRoute
+  SlipsNewRoute: typeof SlipsNewRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/': {
-      id: '/_authenticated/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/slips/new': {
-      id: '/_authenticated/slips/new'
+    '/slips/new': {
+      id: '/slips/new'
       path: '/slips/new'
       fullPath: '/slips/new'
-      preLoaderRoute: typeof AuthenticatedSlipsNewRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      preLoaderRoute: typeof SlipsNewRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/slips/$id': {
-      id: '/_authenticated/slips/$id'
+    '/slips/$id': {
+      id: '/slips/$id'
       path: '/slips/$id'
       fullPath: '/slips/$id'
-      preLoaderRoute: typeof AuthenticatedSlipsIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      preLoaderRoute: typeof SlipsIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface AuthenticatedRouteChildren {
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedSlipsIdRoute: typeof AuthenticatedSlipsIdRoute
-  AuthenticatedSlipsNewRoute: typeof AuthenticatedSlipsNewRoute
-}
-
-const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-  AuthenticatedSlipsIdRoute: AuthenticatedSlipsIdRoute,
-  AuthenticatedSlipsNewRoute: AuthenticatedSlipsNewRoute,
-}
-
-const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
-  AuthenticatedRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
-  AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  LoginRoute: LoginRoute,
+  IndexRoute: IndexRoute,
+  SlipsIdRoute: SlipsIdRoute,
+  SlipsNewRoute: SlipsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
