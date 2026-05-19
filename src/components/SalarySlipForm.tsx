@@ -35,17 +35,118 @@ const deductionsFields = [
 
 const numberToWords = (num: number): string => {
   if (!num || isNaN(num)) return "";
-  const a = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+  const a = [
+    "",
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine",
+    "Ten",
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "Sixteen",
+    "Seventeen",
+    "Eighteen",
+    "Nineteen",
+  ];
   const b = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
   const inWords = (n: number): string => {
     if (n < 20) return a[n];
     if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? " " + a[n % 10] : "");
-    if (n < 1000) return a[Math.floor(n / 100)] + " Hundred" + (n % 100 ? " " + inWords(n % 100) : "");
-    if (n < 100000) return inWords(Math.floor(n / 1000)) + " Thousand" + (n % 1000 ? " " + inWords(n % 1000) : "");
-    if (n < 10000000) return inWords(Math.floor(n / 100000)) + " Lakh" + (n % 100000 ? " " + inWords(n % 100000) : "");
-    return inWords(Math.floor(n / 10000000)) + " Crore" + (n % 10000000 ? " " + inWords(n % 10000000) : "");
+    if (n < 1000)
+      return a[Math.floor(n / 100)] + " Hundred" + (n % 100 ? " " + inWords(n % 100) : "");
+    if (n < 100000)
+      return (
+        inWords(Math.floor(n / 1000)) + " Thousand" + (n % 1000 ? " " + inWords(n % 1000) : "")
+      );
+    if (n < 10000000)
+      return (
+        inWords(Math.floor(n / 100000)) + " Lakh" + (n % 100000 ? " " + inWords(n % 100000) : "")
+      );
+    return (
+      inWords(Math.floor(n / 10000000)) +
+      " Crore" +
+      (n % 10000000 ? " " + inWords(n % 10000000) : "")
+    );
   };
   return inWords(Math.floor(num)) + " Rupees Only";
+};
+
+const exportTheme = {
+  "--background": "#f8fafc",
+  "--foreground": "#172033",
+  "--card": "#ffffff",
+  "--card-foreground": "#172033",
+  "--muted": "#f1f5f9",
+  "--muted-foreground": "#64748b",
+  "--border": "#dbe4ee",
+  "--primary": "#2563eb",
+  "--primary-foreground": "#ffffff",
+  "--secondary": "#ea580c",
+  "--secondary-foreground": "#ffffff",
+  "--gradient-brand": "linear-gradient(135deg, #2563eb, #1d4ed8)",
+  "--gradient-accent": "linear-gradient(135deg, #ea580c, #f59e0b)",
+  "--shadow-elegant": "0 20px 50px -20px rgba(30, 64, 175, 0.35)",
+  "--shadow-soft": "0 4px 20px -8px rgba(30, 64, 175, 0.15)",
+};
+
+const colorAliases = [
+  "background",
+  "foreground",
+  "card",
+  "card-foreground",
+  "muted",
+  "muted-foreground",
+  "border",
+  "primary",
+  "primary-foreground",
+  "secondary",
+  "secondary-foreground",
+] as const;
+
+const waitForExportAssets = async (root: HTMLElement) => {
+  await document.fonts?.ready;
+  await Promise.all(
+    Array.from(root.querySelectorAll("img")).map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise<void>((resolve) => {
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+      });
+    }),
+  );
+};
+
+const createExportClone = (source: HTMLElement) => {
+  const width = Math.ceil(source.getBoundingClientRect().width);
+  const wrapper = document.createElement("div");
+  Object.assign(wrapper.style, {
+    position: "fixed",
+    top: "0",
+    left: "-10000px",
+    width: `${width}px`,
+    background: "#ffffff",
+    pointerEvents: "none",
+    zIndex: "-1",
+  });
+  Object.entries(exportTheme).forEach(([key, value]) => wrapper.style.setProperty(key, value));
+  colorAliases.forEach((name) => wrapper.style.setProperty(`--color-${name}`, `var(--${name})`));
+
+  const clone = source.cloneNode(true) as HTMLElement;
+  clone.style.width = `${width}px`;
+  clone.style.maxWidth = "none";
+  clone.classList.add("export-capture");
+  wrapper.appendChild(clone);
+  document.body.appendChild(wrapper);
+  return { wrapper, clone };
 };
 
 export type SlipData = {
@@ -78,11 +179,11 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
 
   const grossEarnings = useMemo(
     () => earningsFields.reduce((s, f) => s + (parseFloat(earnings[f.key]) || 0), 0),
-    [earnings]
+    [earnings],
   );
   const totalDeductions = useMemo(
     () => deductionsFields.reduce((s, f) => s + (parseFloat(deductions[f.key]) || 0), 0),
-    [deductions]
+    [deductions],
   );
   const netSalary = grossEarnings - totalDeductions;
 
@@ -119,8 +220,8 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
         toast.success("Slip saved");
         navigate({ to: "/slips/$id", params: { id: data.id }, replace: true });
       }
-    } catch (e: any) {
-      toast.error(e?.message ?? "Failed to save");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Failed to save");
     } finally {
       setBusy(null);
     }
@@ -129,12 +230,21 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
   const downloadPDF = async () => {
     if (!slipRef.current) return;
     setBusy("pdf");
+    let exportWrapper: HTMLDivElement | null = null;
     try {
       const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
         import("html2canvas-pro"),
         import("jspdf"),
       ]);
-      const canvas = await html2canvas(slipRef.current, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const { wrapper, clone } = createExportClone(slipRef.current);
+      exportWrapper = wrapper;
+      await waitForExportAssets(clone);
+      const canvas = await html2canvas(clone, {
+        scale: Math.max(2, window.devicePixelRatio || 1),
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        logging: false,
+      });
       const img = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
       const pageW = pdf.internal.pageSize.getWidth();
@@ -148,6 +258,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
       pdf.addImage(img, "PNG", (pageW - w) / 2, (pageH - h) / 2, w, h);
       pdf.save(`Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.pdf`);
     } finally {
+      exportWrapper?.remove();
       setBusy(null);
     }
   };
@@ -155,12 +266,19 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
   const downloadDOC = async () => {
     if (!slipRef.current) return;
     setBusy("doc");
+    let exportWrapper: HTMLDivElement | null = null;
     try {
-      const [{ default: html2canvas }, { Document, ImageRun, Packer, Paragraph }] = await Promise.all([
-        import("html2canvas-pro"),
-        import("docx"),
-      ]);
-      const canvas = await html2canvas(slipRef.current, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const [{ default: html2canvas }, { Document, ImageRun, Packer, Paragraph }] =
+        await Promise.all([import("html2canvas-pro"), import("docx")]);
+      const { wrapper, clone } = createExportClone(slipRef.current);
+      exportWrapper = wrapper;
+      await waitForExportAssets(clone);
+      const canvas = await html2canvas(clone, {
+        scale: Math.max(2, window.devicePixelRatio || 1),
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        logging: false,
+      });
       const pngBytes = await new Promise<Uint8Array>((resolve) => {
         canvas.toBlob(async (blob) => {
           const buffer = await blob!.arrayBuffer();
@@ -171,14 +289,32 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
       const imageWidth = Math.floor(canvas.width * scale);
       const imageHeight = Math.floor(canvas.height * scale);
       const doc = new Document({
-        sections: [{
-          properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 432, right: 432, bottom: 432, left: 432 } } },
-          children: [new Paragraph({ children: [new ImageRun({
-            type: "png", data: pngBytes,
-            transformation: { width: imageWidth, height: imageHeight },
-            altText: { title: "Salary Slip", description: "Salary slip", name: "Salary Slip" },
-          })] })],
-        }],
+        sections: [
+          {
+            properties: {
+              page: {
+                size: { width: 11906, height: 16838 },
+                margin: { top: 432, right: 432, bottom: 432, left: 432 },
+              },
+            },
+            children: [
+              new Paragraph({
+                children: [
+                  new ImageRun({
+                    type: "png",
+                    data: pngBytes,
+                    transformation: { width: imageWidth, height: imageHeight },
+                    altText: {
+                      title: "Salary Slip",
+                      description: "Salary slip",
+                      name: "Salary Slip",
+                    },
+                  }),
+                ],
+              }),
+            ],
+          },
+        ],
       });
       const blob = await Packer.toBlob(doc);
       const url = URL.createObjectURL(blob);
@@ -190,6 +326,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } finally {
+      exportWrapper?.remove();
       setBusy(null);
     }
   };
@@ -247,25 +384,45 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
           className="print-page mx-auto overflow-hidden rounded-2xl bg-card shadow-[var(--shadow-elegant)]"
           style={{ borderTop: "6px solid transparent", borderImage: "var(--gradient-brand) 1" }}
         >
-          <header className="relative px-8 pt-7 pb-0 text-white" style={{ background: "var(--gradient-brand)" }}>
-            <div className="absolute inset-y-0 right-0 w-1/3 opacity-30"
-              style={{ background: "var(--gradient-accent)", clipPath: "polygon(30% 0, 100% 0, 100% 100%, 0% 100%)" }} />
+          <header
+            className="relative px-8 pt-7 pb-0 text-white"
+            style={{ background: "var(--gradient-brand)" }}
+          >
+            <div
+              className="absolute inset-y-0 right-0 w-1/3 opacity-30"
+              style={{
+                background: "var(--gradient-accent)",
+                clipPath: "polygon(30% 0, 100% 0, 100% 100%, 0% 100%)",
+              }}
+            />
             <div className="relative flex items-center justify-between gap-6">
               <div className="rounded-lg bg-white/95 px-4 py-2.5 shadow-sm">
                 <img src={logo} alt="Technorizen" className="h-12 w-auto" />
               </div>
               <div className="text-right leading-tight">
-                <h1 className="text-lg sm:text-xl font-bold tracking-tight">Technorizen Software Solutions Pvt. Ltd.</h1>
-                <p className="mt-1 text-[11px] sm:text-xs text-white/85">402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002</p>
-                <p className="text-[11px] sm:text-xs font-medium text-white/95">www.technorizen.com</p>
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight">
+                  Technorizen Software Solutions Pvt. Ltd.
+                </h1>
+                <p className="mt-1 text-[11px] sm:text-xs text-white/85">
+                  402, Sapphire House, Sapna Sangeeta Road, Indore (M.P.) 452002
+                </p>
+                <p className="text-[11px] sm:text-xs font-medium text-white/95">
+                  www.technorizen.com
+                </p>
               </div>
             </div>
             <div className="relative mt-5 -mx-8 flex items-center justify-between gap-4 border-t border-white/20 bg-black/15 px-8 py-3">
-              <h2 className="text-base sm:text-lg font-bold uppercase tracking-[0.35em]">Salary Slip</h2>
+              <h2 className="text-base sm:text-lg font-bold uppercase tracking-[0.35em]">
+                Salary Slip
+              </h2>
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-white/80">Month:</span>
-                <input value={month} onChange={(e) => setMonth(e.target.value)} placeholder="e.g. November 2025"
-                  className="w-48 rounded-md border border-white/30 bg-white/10 px-2 py-1 text-sm text-white placeholder:text-white/60 outline-none focus:bg-white/20 print:border-0 print:bg-transparent" />
+                <input
+                  value={month}
+                  onChange={(e) => setMonth(e.target.value)}
+                  placeholder="e.g. November 2025"
+                  className="w-48 rounded-md border border-white/30 bg-white/10 px-2 py-1 text-sm text-white placeholder:text-white/60 outline-none focus:bg-white/20 print:border-0 print:bg-transparent"
+                />
               </div>
             </div>
           </header>
@@ -273,17 +430,36 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
           <Section title="Employee Details" accent="blue">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
               {employeeFields.map((f) => (
-                <Field key={f.key} label={f.label} value={emp[f.key] || ""} onChange={(v) => setEmp({ ...emp, [f.key]: v })} />
+                <Field
+                  key={f.key}
+                  label={f.label}
+                  value={emp[f.key] || ""}
+                  onChange={(v) => setEmp({ ...emp, [f.key]: v })}
+                />
               ))}
             </div>
           </Section>
 
           <Section title="Earnings & Deductions" accent="red">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <SlipTable title="Earnings" color="blue" rows={earningsFields} values={earnings}
-                onChange={(k, v) => setEarnings({ ...earnings, [k]: v })} totalLabel="Gross Earnings" total={grossEarnings} />
-              <SlipTable title="Deductions" color="red" rows={deductionsFields} values={deductions}
-                onChange={(k, v) => setDeductions({ ...deductions, [k]: v })} totalLabel="Total Deductions" total={totalDeductions} />
+              <SlipTable
+                title="Earnings"
+                color="blue"
+                rows={earningsFields}
+                values={earnings}
+                onChange={(k, v) => setEarnings({ ...earnings, [k]: v })}
+                totalLabel="Gross Earnings"
+                total={grossEarnings}
+              />
+              <SlipTable
+                title="Deductions"
+                color="red"
+                rows={deductionsFields}
+                values={deductions}
+                onChange={(k, v) => setDeductions({ ...deductions, [k]: v })}
+                totalLabel="Total Deductions"
+                total={totalDeductions}
+              />
             </div>
           </Section>
 
@@ -291,14 +467,21 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
             <div className="overflow-hidden rounded-xl border border-border">
               <SummaryRow label="Gross Salary" value={fmt(grossEarnings)} />
               <SummaryRow label="Less: Total Deductions" value={fmt(totalDeductions)} />
-              <div className="flex items-center justify-between px-5 py-4 text-white" style={{ background: "var(--gradient-brand)" }}>
-                <span className="text-sm font-semibold uppercase tracking-wider">Net Salary / In-Hand</span>
+              <div
+                className="flex items-center justify-between px-5 py-4 text-white"
+                style={{ background: "var(--gradient-brand)" }}
+              >
+                <span className="text-sm font-semibold uppercase tracking-wider">
+                  Net Salary / In-Hand
+                </span>
                 <span className="text-2xl font-bold">₹ {fmt(netSalary)}</span>
               </div>
             </div>
             <p className="mt-4 text-sm">
               <span className="font-semibold text-foreground">Net Salary in Words: </span>
-              <span className="italic text-muted-foreground">{netSalary > 0 ? numberToWords(netSalary) : "—"}</span>
+              <span className="italic text-muted-foreground">
+                {netSalary > 0 ? numberToWords(netSalary) : "—"}
+              </span>
             </p>
           </Section>
 
@@ -307,7 +490,9 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
               {["Employer Signature", "Employee Signature"].map((s) => (
                 <div key={s} className="text-center">
                   <div className="mx-auto h-px w-3/4 bg-foreground/40" />
-                  <p className="mt-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">{s}</p>
+                  <p className="mt-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    {s}
+                  </p>
                 </div>
               ))}
             </div>
@@ -321,12 +506,24 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
   );
 }
 
-function Section({ title, children, accent }: { title: string; children: React.ReactNode; accent: "blue" | "red" }) {
+function Section({
+  title,
+  children,
+  accent,
+}: {
+  title: string;
+  children: React.ReactNode;
+  accent: "blue" | "red";
+}) {
   return (
     <section className="px-8 py-6">
       <div className="mb-4 flex items-center gap-3">
-        <span className="block h-5 w-1.5 rounded-full"
-          style={{ background: accent === "blue" ? "var(--gradient-brand)" : "var(--gradient-accent)" }} />
+        <span
+          className="block h-5 w-1.5 rounded-full"
+          style={{
+            background: accent === "blue" ? "var(--gradient-brand)" : "var(--gradient-accent)",
+          }}
+        />
         <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-foreground">{title}</h3>
         <div className="h-px flex-1 bg-border" />
       </div>
@@ -335,35 +532,68 @@ function Section({ title, children, accent }: { title: string; children: React.R
   );
 }
 
-function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function Field({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <label className="flex items-baseline gap-3">
       <span className="w-40 shrink-0 text-sm text-muted-foreground">{label}</span>
-      <input value={value} onChange={(e) => onChange(e.target.value)}
-        className="flex-1 border-b border-dashed border-border/80 bg-transparent px-1 py-1 text-sm text-foreground outline-none transition-colors focus:border-primary print:border-solid print:border-foreground/40" />
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="flex-1 border-b border-dashed border-border/80 bg-transparent px-1 py-1 text-sm text-foreground outline-none transition-colors focus:border-primary print:border-solid print:border-foreground/40"
+      />
     </label>
   );
 }
 
-function SlipTable({ title, color, rows, values, onChange, totalLabel, total }: {
-  title: string; color: "blue" | "red"; rows: { label: string; key: string }[];
-  values: Record<string, string>; onChange: (k: string, v: string) => void;
-  totalLabel: string; total: number;
+function SlipTable({
+  title,
+  color,
+  rows,
+  values,
+  onChange,
+  totalLabel,
+  total,
+}: {
+  title: string;
+  color: "blue" | "red";
+  rows: { label: string; key: string }[];
+  values: Record<string, string>;
+  onChange: (k: string, v: string) => void;
+  totalLabel: string;
+  total: number;
 }) {
   const bg = color === "blue" ? "var(--gradient-brand)" : "var(--gradient-accent)";
   return (
     <div className="overflow-hidden rounded-xl border border-border">
-      <div className="flex items-center justify-between px-4 py-2.5 text-white" style={{ background: bg }}>
+      <div
+        className="flex items-center justify-between px-4 py-2.5 text-white"
+        style={{ background: bg }}
+      >
         <span className="text-xs font-bold uppercase tracking-widest">{title}</span>
-        <span className="text-xs font-medium uppercase tracking-widest text-white/80">Amount (₹)</span>
+        <span className="text-xs font-medium uppercase tracking-widest text-white/80">
+          Amount (₹)
+        </span>
       </div>
       <ul className="divide-y divide-border">
         {rows.map((r) => (
           <li key={r.key} className="flex items-center justify-between gap-3 px-4 py-2">
             <span className="text-sm text-foreground/90">{r.label}</span>
-            <input type="number" inputMode="decimal" value={values[r.key] || ""}
-              onChange={(e) => onChange(r.key, e.target.value)} placeholder="0.00"
-              className="w-28 rounded border border-transparent bg-muted/60 px-2 py-1 text-right text-sm tabular-nums outline-none transition-colors focus:border-primary focus:bg-card print:bg-transparent" />
+            <input
+              type="number"
+              inputMode="decimal"
+              value={values[r.key] || ""}
+              onChange={(e) => onChange(r.key, e.target.value)}
+              placeholder="0.00"
+              className="w-28 rounded border border-transparent bg-muted/60 px-2 py-1 text-right text-sm tabular-nums outline-none transition-colors focus:border-primary focus:bg-card print:bg-transparent"
+            />
           </li>
         ))}
       </ul>
