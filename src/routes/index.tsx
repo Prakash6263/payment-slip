@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logo from "@/assets/technorizen-logo.png";
-import { Plus, Pencil, Copy, Trash2, LogOut } from "lucide-react";
+import { Plus, Pencil, Copy, Trash2 } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/")({
+export const Route = createFileRoute("/")({
   component: SlipsListPage,
   head: () => ({ meta: [{ title: "Saved Salary Slips — Technorizen" }] }),
 });
@@ -16,7 +16,6 @@ type Slip = {
   updated_at: string;
 };
 
-// "November 2025" → "December 2025" ; "Dec 2025" → "Jan 2026" ; falls back to original.
 function bumpMonth(label: string): string {
   if (!label) return "";
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -58,13 +57,11 @@ function SlipsListPage() {
   useEffect(() => { load(); }, []);
 
   const onDuplicate = async (slip: Slip) => {
-    const { data: userRes } = await supabase.auth.getUser();
     const { data, error } = await supabase.from("salary_slips").insert({
       month: bumpMonth(slip.month),
       employee_name: slip.employee_name,
       employee_id: slip.employee_id,
       emp: slip.emp, earnings: slip.earnings, deductions: slip.deductions,
-      created_by: userRes.user?.id ?? null,
     }).select("id").single();
     if (error) { toast.error(error.message); return; }
     toast.success("Copied for next month");
@@ -79,11 +76,6 @@ function SlipsListPage() {
     toast.success("Deleted");
   };
 
-  const onLogout = async () => {
-    await supabase.auth.signOut();
-    navigate({ to: "/login", replace: true });
-  };
-
   const filtered = (slips ?? []).filter((s) =>
     !q || [s.employee_name, s.employee_id, s.month].join(" ").toLowerCase().includes(q.toLowerCase())
   );
@@ -96,17 +88,11 @@ function SlipsListPage() {
             <img src={logo} alt="Technorizen" className="h-8 w-auto" />
             <span className="text-sm font-medium text-foreground">Salary Slips</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Link to="/slips/new"
-              className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white"
-              style={{ background: "var(--gradient-brand)" }}>
-              <Plus className="h-4 w-4" /> New slip
-            </Link>
-            <button onClick={onLogout}
-              className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-muted">
-              <LogOut className="h-4 w-4" /> Sign out
-            </button>
-          </div>
+          <Link to="/slips/new"
+            className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white"
+            style={{ background: "var(--gradient-brand)" }}>
+            <Plus className="h-4 w-4" /> New slip
+          </Link>
         </div>
       </div>
 

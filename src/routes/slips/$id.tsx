@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SalarySlipForm, type SlipData } from "@/components/SalarySlipForm";
 
-export const Route = createFileRoute("/_authenticated/slips/$id")({
+export const Route = createFileRoute("/slips/$id")({
   component: EditSlipPage,
   head: () => ({ meta: [{ title: "Edit Salary Slip — Technorizen" }] }),
 });
@@ -14,8 +14,9 @@ function EditSlipPage() {
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.from("salary_slips").select("*").eq("id", id).single().then(({ data, error }) => {
+    supabase.from("salary_slips").select("*").eq("id", id).maybeSingle().then(({ data, error }) => {
       if (error) { setErr(error.message); return; }
+      if (!data) { setErr("Slip not found"); return; }
       setData({
         id: data.id, month: data.month,
         emp: (data.emp as Record<string, string>) ?? {},
