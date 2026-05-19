@@ -200,8 +200,11 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
           <div className="flex items-center gap-3">
             <img src={logo} alt="Technorizen" className="h-8 w-auto" />
-            <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">
-              ← All Slips
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+            >
+              ← All Salary Slips
             </Link>
           </div>
           <div className="flex items-center gap-2">
