@@ -179,8 +179,8 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
         toast.success("Slip saved");
         navigate({ to: "/slips/$id", params: { id: data.id }, replace: true });
       }
-    } catch (e: any) {
-      toast.error(e?.message ?? "Failed to save");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Failed to save");
     } finally {
       setBusy(null);
     }
