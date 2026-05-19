@@ -189,12 +189,21 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
   const downloadPDF = async () => {
     if (!slipRef.current) return;
     setBusy("pdf");
+    let exportWrapper: HTMLDivElement | null = null;
     try {
       const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
         import("html2canvas-pro"),
         import("jspdf"),
       ]);
-      const canvas = await html2canvas(slipRef.current, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const { wrapper, clone } = createExportClone(slipRef.current);
+      exportWrapper = wrapper;
+      await waitForExportAssets(clone);
+      const canvas = await html2canvas(clone, {
+        scale: Math.max(2, window.devicePixelRatio || 1),
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        logging: false,
+      });
       const img = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
       const pageW = pdf.internal.pageSize.getWidth();
@@ -208,6 +217,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
       pdf.addImage(img, "PNG", (pageW - w) / 2, (pageH - h) / 2, w, h);
       pdf.save(`Technorizen-Salary-Slip${month ? "-" + month.replace(/\s+/g, "_") : ""}.pdf`);
     } finally {
+      exportWrapper?.remove();
       setBusy(null);
     }
   };
@@ -215,12 +225,21 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
   const downloadDOC = async () => {
     if (!slipRef.current) return;
     setBusy("doc");
+    let exportWrapper: HTMLDivElement | null = null;
     try {
       const [{ default: html2canvas }, { Document, ImageRun, Packer, Paragraph }] = await Promise.all([
         import("html2canvas-pro"),
         import("docx"),
       ]);
-      const canvas = await html2canvas(slipRef.current, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const { wrapper, clone } = createExportClone(slipRef.current);
+      exportWrapper = wrapper;
+      await waitForExportAssets(clone);
+      const canvas = await html2canvas(clone, {
+        scale: Math.max(2, window.devicePixelRatio || 1),
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        logging: false,
+      });
       const pngBytes = await new Promise<Uint8Array>((resolve) => {
         canvas.toBlob(async (blob) => {
           const buffer = await blob!.arrayBuffer();
@@ -250,6 +269,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } finally {
+      exportWrapper?.remove();
       setBusy(null);
     }
   };
