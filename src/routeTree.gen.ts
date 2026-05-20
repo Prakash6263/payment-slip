@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlipsNewRouteImport } from './routes/slips/new'
 import { Route as SlipsIdRouteImport } from './routes/slips/$id'
 import { Route as OffersNewRouteImport } from './routes/offers/new'
+import { Route as OffersIdRouteImport } from './routes/offers/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,15 +35,22 @@ const OffersNewRoute = OffersNewRouteImport.update({
   path: '/offers/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OffersIdRoute = OffersIdRouteImport.update({
+  id: '/offers/$id',
+  path: '/offers/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/offers/$id': typeof OffersIdRoute
   '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/offers/$id': typeof OffersIdRoute
   '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/offers/$id': typeof OffersIdRoute
   '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/offers/new' | '/slips/$id' | '/slips/new'
+  fullPaths: '/' | '/offers/$id' | '/offers/new' | '/slips/$id' | '/slips/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/offers/new' | '/slips/$id' | '/slips/new'
-  id: '__root__' | '/' | '/offers/new' | '/slips/$id' | '/slips/new'
+  to: '/' | '/offers/$id' | '/offers/new' | '/slips/$id' | '/slips/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/offers/$id'
+    | '/offers/new'
+    | '/slips/$id'
+    | '/slips/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OffersIdRoute: typeof OffersIdRoute
   OffersNewRoute: typeof OffersNewRoute
   SlipsIdRoute: typeof SlipsIdRoute
   SlipsNewRoute: typeof SlipsNewRoute
@@ -99,11 +115,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OffersNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/offers/$id': {
+      id: '/offers/$id'
+      path: '/offers/$id'
+      fullPath: '/offers/$id'
+      preLoaderRoute: typeof OffersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OffersIdRoute: OffersIdRoute,
   OffersNewRoute: OffersNewRoute,
   SlipsIdRoute: SlipsIdRoute,
   SlipsNewRoute: SlipsNewRoute,
