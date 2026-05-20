@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlipsNewRouteImport } from './routes/slips/new'
 import { Route as SlipsIdRouteImport } from './routes/slips/$id'
+import { Route as OffersNewRouteImport } from './routes/offers/new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,33 +29,42 @@ const SlipsIdRoute = SlipsIdRouteImport.update({
   path: '/slips/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OffersNewRoute = OffersNewRouteImport.update({
+  id: '/offers/new',
+  path: '/offers/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/slips/$id' | '/slips/new'
+  fullPaths: '/' | '/offers/new' | '/slips/$id' | '/slips/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/slips/$id' | '/slips/new'
-  id: '__root__' | '/' | '/slips/$id' | '/slips/new'
+  to: '/' | '/offers/new' | '/slips/$id' | '/slips/new'
+  id: '__root__' | '/' | '/offers/new' | '/slips/$id' | '/slips/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OffersNewRoute: typeof OffersNewRoute
   SlipsIdRoute: typeof SlipsIdRoute
   SlipsNewRoute: typeof SlipsNewRoute
 }
@@ -82,14 +92,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlipsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/offers/new': {
+      id: '/offers/new'
+      path: '/offers/new'
+      fullPath: '/offers/new'
+      preLoaderRoute: typeof OffersNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OffersNewRoute: OffersNewRoute,
   SlipsIdRoute: SlipsIdRoute,
   SlipsNewRoute: SlipsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
