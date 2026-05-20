@@ -162,10 +162,6 @@
 }
 
 @media print {
-  article {
-    border-top: none !important;
-  }
-}
   @page {
     size: A4;
     margin: 12mm;

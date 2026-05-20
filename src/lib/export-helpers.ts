@@ -64,19 +64,6 @@ export const exportToPDF = async (source: HTMLElement, filename: string) => {
     import("jspdf"),
   ]);
   const { wrapper, clone } = createExportClone(source);
-    // Remove top gradient border entirely; we will draw it manually on the first PDF page
-    const article = clone.querySelector('article');
-    if (article) {
-      article.style.borderTop = 'none';
-    }
-    // Replace form controls with plain text for correct rendering
-    clone.querySelectorAll('input, textarea, select').forEach((el) => {
-      const value = (el as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement).value;
-      const span = document.createElement('span');
-      span.textContent = value;
-      span.className = el.className;
-      el.replaceWith(span);
-    });
   try {
     await waitForExportAssets(clone);
     const canvas = await html2canvas(clone, {
@@ -93,10 +80,6 @@ export const exportToPDF = async (source: HTMLElement, filename: string) => {
     const maxW = pageW - margin * 2;
     // Multi-page: slice the tall canvas into page-sized chunks.
     const pxPerPt = canvas.width / maxW;
-    // Draw blue line on the first page (top margin)
-    pdf.setDrawColor(0, 0, 255);
-    pdf.setLineWidth(0.5);
-    pdf.line(margin, margin, pageW - margin, margin);
     const pageHpx = Math.floor((pageH - margin * 2) * pxPerPt);
     let y = 0;
     let first = true;
@@ -111,7 +94,6 @@ export const exportToPDF = async (source: HTMLElement, filename: string) => {
       ctx.drawImage(canvas, 0, -y);
       const sliceImg = slice.toDataURL("image/png");
       if (!first) pdf.addPage();
-      // No extra line needed on subsequent pages – the border has been removed from the HTML
       first = false;
       pdf.addImage(sliceImg, "PNG", margin, margin, maxW, sliceH / pxPerPt);
       y += sliceH;
