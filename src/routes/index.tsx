@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logo from "@/assets/technorizen-logo.png";
-import { Plus, Pencil, Copy, Trash2 } from "lucide-react";
+import { Plus, Pencil, Copy, Trash2, FileSignature } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: SlipsListPage,
@@ -88,11 +88,17 @@ function SlipsListPage() {
             <img src={logo} alt="Technorizen" className="h-8 w-auto" />
             <span className="text-sm font-medium text-foreground">Salary Slips</span>
           </div>
-          <Link to="/slips/new"
-            className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white"
-            style={{ background: "var(--gradient-brand)" }}>
-            <Plus className="h-4 w-4" /> New slip
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/offers"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
+              <FileSignature className="h-4 w-4" /> Offer Letters
+            </Link>
+            <Link to="/slips/new"
+              className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white"
+              style={{ background: "var(--gradient-brand)" }}>
+              <Plus className="h-4 w-4" /> New slip
+            </Link>
+          </div>
         </div>
       </div>
 

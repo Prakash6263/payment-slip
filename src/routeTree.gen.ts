@@ -10,12 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OffersIndexRouteImport } from './routes/offers/index'
 import { Route as SlipsNewRouteImport } from './routes/slips/new'
 import { Route as SlipsIdRouteImport } from './routes/slips/$id'
+import { Route as OffersNewRouteImport } from './routes/offers/new'
+import { Route as OffersIdRouteImport } from './routes/offers/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OffersIndexRoute = OffersIndexRouteImport.update({
+  id: '/offers/',
+  path: '/offers/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlipsNewRoute = SlipsNewRouteImport.update({
@@ -28,35 +36,76 @@ const SlipsIdRoute = SlipsIdRouteImport.update({
   path: '/slips/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OffersNewRoute = OffersNewRouteImport.update({
+  id: '/offers/new',
+  path: '/offers/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OffersIdRoute = OffersIdRouteImport.update({
+  id: '/offers/$id',
+  path: '/offers/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/offers/$id': typeof OffersIdRoute
+  '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
+  '/offers/': typeof OffersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/offers/$id': typeof OffersIdRoute
+  '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
+  '/offers': typeof OffersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/offers/$id': typeof OffersIdRoute
+  '/offers/new': typeof OffersNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
+  '/offers/': typeof OffersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/slips/$id' | '/slips/new'
+  fullPaths:
+    | '/'
+    | '/offers/$id'
+    | '/offers/new'
+    | '/slips/$id'
+    | '/slips/new'
+    | '/offers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/slips/$id' | '/slips/new'
-  id: '__root__' | '/' | '/slips/$id' | '/slips/new'
+  to:
+    | '/'
+    | '/offers/$id'
+    | '/offers/new'
+    | '/slips/$id'
+    | '/slips/new'
+    | '/offers'
+  id:
+    | '__root__'
+    | '/'
+    | '/offers/$id'
+    | '/offers/new'
+    | '/slips/$id'
+    | '/slips/new'
+    | '/offers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OffersIdRoute: typeof OffersIdRoute
+  OffersNewRoute: typeof OffersNewRoute
   SlipsIdRoute: typeof SlipsIdRoute
   SlipsNewRoute: typeof SlipsNewRoute
+  OffersIndexRoute: typeof OffersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offers/': {
+      id: '/offers/'
+      path: '/offers'
+      fullPath: '/offers/'
+      preLoaderRoute: typeof OffersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/slips/new': {
@@ -82,13 +138,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlipsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/offers/new': {
+      id: '/offers/new'
+      path: '/offers/new'
+      fullPath: '/offers/new'
+      preLoaderRoute: typeof OffersNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offers/$id': {
+      id: '/offers/$id'
+      path: '/offers/$id'
+      fullPath: '/offers/$id'
+      preLoaderRoute: typeof OffersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OffersIdRoute: OffersIdRoute,
+  OffersNewRoute: OffersNewRoute,
   SlipsIdRoute: SlipsIdRoute,
   SlipsNewRoute: SlipsNewRoute,
+  OffersIndexRoute: OffersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

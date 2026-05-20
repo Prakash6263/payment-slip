@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      offer_letters: {
+        Row: {
+          created_at: string
+          data: Json
+          designation: string
+          employee_name: string
+          id: string
+          joining_date: string
+          letter_date: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          joining_date?: string
+          letter_date?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          joining_date?: string
+          letter_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       salary_slips: {
         Row: {
           created_at: string
