@@ -417,12 +417,34 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
               </h2>
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-white/80">Month:</span>
-                <input
-                  value={month}
-                  onChange={(e) => setMonth(e.target.value)}
-                  placeholder="e.g. November 2025"
-                  className="w-48 rounded-md border border-white/30 bg-white/10 px-2 py-1 text-sm text-white placeholder:text-white/60 outline-none focus:bg-white/20 print:border-0 print:bg-transparent"
-                />
+                {(() => {
+                  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                  const YEARS = [2026, 2027, 2028, 2029, 2030];
+                  const parts = month.trim().split(/\s+/);
+                  const selMonth = MONTHS.includes(parts[0]) ? parts[0] : "";
+                  const selYear = parts[1] && YEARS.includes(Number(parts[1])) ? parts[1] : "";
+                  const selectClass = "rounded-md border border-white/30 bg-white/10 px-2 py-1 text-sm text-white outline-none focus:bg-white/20 print:border-0 print:bg-transparent [&>option]:text-foreground";
+                  return (
+                    <>
+                      <select
+                        value={selMonth}
+                        onChange={(e) => setMonth(`${e.target.value}${selYear ? " " + selYear : ""}`.trim())}
+                        className={selectClass}
+                      >
+                        <option value="">Month</option>
+                        {MONTHS.map((m) => <option key={m} value={m}>{m}</option>)}
+                      </select>
+                      <select
+                        value={selYear}
+                        onChange={(e) => setMonth(`${selMonth}${e.target.value ? " " + e.target.value : ""}`.trim())}
+                        className={selectClass}
+                      >
+                        <option value="">Year</option>
+                        {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+                      </select>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </header>
