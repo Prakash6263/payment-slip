@@ -10,20 +10,44 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RelievingIndexRouteImport } from './routes/relieving/index'
 import { Route as OffersIndexRouteImport } from './routes/offers/index'
+import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
+import { Route as ConfirmationsIndexRouteImport } from './routes/confirmations/index'
 import { Route as SlipsNewRouteImport } from './routes/slips/new'
 import { Route as SlipsIdRouteImport } from './routes/slips/$id'
+import { Route as RelievingNewRouteImport } from './routes/relieving/new'
+import { Route as RelievingIdRouteImport } from './routes/relieving/$id'
 import { Route as OffersNewRouteImport } from './routes/offers/new'
 import { Route as OffersIdRouteImport } from './routes/offers/$id'
+import { Route as ExperienceNewRouteImport } from './routes/experience/new'
+import { Route as ExperienceIdRouteImport } from './routes/experience/$id'
+import { Route as ConfirmationsNewRouteImport } from './routes/confirmations/new'
+import { Route as ConfirmationsIdRouteImport } from './routes/confirmations/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RelievingIndexRoute = RelievingIndexRouteImport.update({
+  id: '/relieving/',
+  path: '/relieving/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OffersIndexRoute = OffersIndexRouteImport.update({
   id: '/offers/',
   path: '/offers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienceIndexRoute = ExperienceIndexRouteImport.update({
+  id: '/experience/',
+  path: '/experience/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationsIndexRoute = ConfirmationsIndexRouteImport.update({
+  id: '/confirmations/',
+  path: '/confirmations/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlipsNewRoute = SlipsNewRouteImport.update({
@@ -36,6 +60,16 @@ const SlipsIdRoute = SlipsIdRouteImport.update({
   path: '/slips/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RelievingNewRoute = RelievingNewRouteImport.update({
+  id: '/relieving/new',
+  path: '/relieving/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelievingIdRoute = RelievingIdRouteImport.update({
+  id: '/relieving/$id',
+  path: '/relieving/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OffersNewRoute = OffersNewRouteImport.update({
   id: '/offers/new',
   path: '/offers/new',
@@ -46,66 +80,149 @@ const OffersIdRoute = OffersIdRouteImport.update({
   path: '/offers/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExperienceNewRoute = ExperienceNewRouteImport.update({
+  id: '/experience/new',
+  path: '/experience/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienceIdRoute = ExperienceIdRouteImport.update({
+  id: '/experience/$id',
+  path: '/experience/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationsNewRoute = ConfirmationsNewRouteImport.update({
+  id: '/confirmations/new',
+  path: '/confirmations/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationsIdRoute = ConfirmationsIdRouteImport.update({
+  id: '/confirmations/$id',
+  path: '/confirmations/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/confirmations/$id': typeof ConfirmationsIdRoute
+  '/confirmations/new': typeof ConfirmationsNewRoute
+  '/experience/$id': typeof ExperienceIdRoute
+  '/experience/new': typeof ExperienceNewRoute
   '/offers/$id': typeof OffersIdRoute
   '/offers/new': typeof OffersNewRoute
+  '/relieving/$id': typeof RelievingIdRoute
+  '/relieving/new': typeof RelievingNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
+  '/confirmations/': typeof ConfirmationsIndexRoute
+  '/experience/': typeof ExperienceIndexRoute
   '/offers/': typeof OffersIndexRoute
+  '/relieving/': typeof RelievingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/confirmations/$id': typeof ConfirmationsIdRoute
+  '/confirmations/new': typeof ConfirmationsNewRoute
+  '/experience/$id': typeof ExperienceIdRoute
+  '/experience/new': typeof ExperienceNewRoute
   '/offers/$id': typeof OffersIdRoute
   '/offers/new': typeof OffersNewRoute
+  '/relieving/$id': typeof RelievingIdRoute
+  '/relieving/new': typeof RelievingNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
+  '/confirmations': typeof ConfirmationsIndexRoute
+  '/experience': typeof ExperienceIndexRoute
   '/offers': typeof OffersIndexRoute
+  '/relieving': typeof RelievingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/confirmations/$id': typeof ConfirmationsIdRoute
+  '/confirmations/new': typeof ConfirmationsNewRoute
+  '/experience/$id': typeof ExperienceIdRoute
+  '/experience/new': typeof ExperienceNewRoute
   '/offers/$id': typeof OffersIdRoute
   '/offers/new': typeof OffersNewRoute
+  '/relieving/$id': typeof RelievingIdRoute
+  '/relieving/new': typeof RelievingNewRoute
   '/slips/$id': typeof SlipsIdRoute
   '/slips/new': typeof SlipsNewRoute
+  '/confirmations/': typeof ConfirmationsIndexRoute
+  '/experience/': typeof ExperienceIndexRoute
   '/offers/': typeof OffersIndexRoute
+  '/relieving/': typeof RelievingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/confirmations/$id'
+    | '/confirmations/new'
+    | '/experience/$id'
+    | '/experience/new'
     | '/offers/$id'
     | '/offers/new'
+    | '/relieving/$id'
+    | '/relieving/new'
     | '/slips/$id'
     | '/slips/new'
+    | '/confirmations/'
+    | '/experience/'
     | '/offers/'
+    | '/relieving/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/confirmations/$id'
+    | '/confirmations/new'
+    | '/experience/$id'
+    | '/experience/new'
     | '/offers/$id'
     | '/offers/new'
+    | '/relieving/$id'
+    | '/relieving/new'
     | '/slips/$id'
     | '/slips/new'
+    | '/confirmations'
+    | '/experience'
     | '/offers'
+    | '/relieving'
   id:
     | '__root__'
     | '/'
+    | '/confirmations/$id'
+    | '/confirmations/new'
+    | '/experience/$id'
+    | '/experience/new'
     | '/offers/$id'
     | '/offers/new'
+    | '/relieving/$id'
+    | '/relieving/new'
     | '/slips/$id'
     | '/slips/new'
+    | '/confirmations/'
+    | '/experience/'
     | '/offers/'
+    | '/relieving/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConfirmationsIdRoute: typeof ConfirmationsIdRoute
+  ConfirmationsNewRoute: typeof ConfirmationsNewRoute
+  ExperienceIdRoute: typeof ExperienceIdRoute
+  ExperienceNewRoute: typeof ExperienceNewRoute
   OffersIdRoute: typeof OffersIdRoute
   OffersNewRoute: typeof OffersNewRoute
+  RelievingIdRoute: typeof RelievingIdRoute
+  RelievingNewRoute: typeof RelievingNewRoute
   SlipsIdRoute: typeof SlipsIdRoute
   SlipsNewRoute: typeof SlipsNewRoute
+  ConfirmationsIndexRoute: typeof ConfirmationsIndexRoute
+  ExperienceIndexRoute: typeof ExperienceIndexRoute
   OffersIndexRoute: typeof OffersIndexRoute
+  RelievingIndexRoute: typeof RelievingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,11 +234,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/relieving/': {
+      id: '/relieving/'
+      path: '/relieving'
+      fullPath: '/relieving/'
+      preLoaderRoute: typeof RelievingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/offers/': {
       id: '/offers/'
       path: '/offers'
       fullPath: '/offers/'
       preLoaderRoute: typeof OffersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experience/': {
+      id: '/experience/'
+      path: '/experience'
+      fullPath: '/experience/'
+      preLoaderRoute: typeof ExperienceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmations/': {
+      id: '/confirmations/'
+      path: '/confirmations'
+      fullPath: '/confirmations/'
+      preLoaderRoute: typeof ConfirmationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/slips/new': {
@@ -138,6 +276,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlipsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/relieving/new': {
+      id: '/relieving/new'
+      path: '/relieving/new'
+      fullPath: '/relieving/new'
+      preLoaderRoute: typeof RelievingNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relieving/$id': {
+      id: '/relieving/$id'
+      path: '/relieving/$id'
+      fullPath: '/relieving/$id'
+      preLoaderRoute: typeof RelievingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/offers/new': {
       id: '/offers/new'
       path: '/offers/new'
@@ -152,16 +304,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OffersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/experience/new': {
+      id: '/experience/new'
+      path: '/experience/new'
+      fullPath: '/experience/new'
+      preLoaderRoute: typeof ExperienceNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experience/$id': {
+      id: '/experience/$id'
+      path: '/experience/$id'
+      fullPath: '/experience/$id'
+      preLoaderRoute: typeof ExperienceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmations/new': {
+      id: '/confirmations/new'
+      path: '/confirmations/new'
+      fullPath: '/confirmations/new'
+      preLoaderRoute: typeof ConfirmationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmations/$id': {
+      id: '/confirmations/$id'
+      path: '/confirmations/$id'
+      fullPath: '/confirmations/$id'
+      preLoaderRoute: typeof ConfirmationsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConfirmationsIdRoute: ConfirmationsIdRoute,
+  ConfirmationsNewRoute: ConfirmationsNewRoute,
+  ExperienceIdRoute: ExperienceIdRoute,
+  ExperienceNewRoute: ExperienceNewRoute,
   OffersIdRoute: OffersIdRoute,
   OffersNewRoute: OffersNewRoute,
+  RelievingIdRoute: RelievingIdRoute,
+  RelievingNewRoute: RelievingNewRoute,
   SlipsIdRoute: SlipsIdRoute,
   SlipsNewRoute: SlipsNewRoute,
+  ConfirmationsIndexRoute: ConfirmationsIndexRoute,
+  ExperienceIndexRoute: ExperienceIndexRoute,
   OffersIndexRoute: OffersIndexRoute,
+  RelievingIndexRoute: RelievingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

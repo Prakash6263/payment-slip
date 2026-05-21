@@ -14,6 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      confirmation_letters: {
+        Row: {
+          created_at: string
+          data: Json
+          designation: string
+          employee_name: string
+          id: string
+          joining_date: string
+          letter_date: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          joining_date?: string
+          letter_date?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          joining_date?: string
+          letter_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      experience_certificates: {
+        Row: {
+          certificate_date: string
+          created_at: string
+          data: Json
+          designation: string
+          employee_name: string
+          id: string
+          joining_date: string
+          last_working_date: string
+          tenure: string
+          updated_at: string
+        }
+        Insert: {
+          certificate_date?: string
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          joining_date?: string
+          last_working_date?: string
+          tenure?: string
+          updated_at?: string
+        }
+        Update: {
+          certificate_date?: string
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          joining_date?: string
+          last_working_date?: string
+          tenure?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       offer_letters: {
         Row: {
           created_at: string
@@ -43,6 +115,36 @@ export type Database = {
           id?: string
           joining_date?: string
           letter_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      relieving_letters: {
+        Row: {
+          created_at: string
+          data: Json
+          designation: string
+          employee_name: string
+          id: string
+          relieving_date: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          relieving_date?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          designation?: string
+          employee_name?: string
+          id?: string
+          relieving_date?: string
           updated_at?: string
         }
         Relationships: []
