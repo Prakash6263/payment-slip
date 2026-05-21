@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logo from "@/assets/technorizen-logo.png";
-import { Plus, Pencil, Copy, Trash2, FileSignature } from "lucide-react";
+import { Plus, Pencil, Copy, Trash2, FileSignature, ShieldCheck, LogOut, Award } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: SlipsListPage,
@@ -92,6 +92,18 @@ function SlipsListPage() {
             <Link to="/offers"
               className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
               <FileSignature className="h-4 w-4" /> Offer Letters
+            </Link>
+            <Link to="/confirmations"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
+              <ShieldCheck className="h-4 w-4" /> Confirmation
+            </Link>
+            <Link to="/relieving"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
+              <LogOut className="h-4 w-4" /> Relieving
+            </Link>
+            <Link to="/experience"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
+              <Award className="h-4 w-4" /> Experience
             </Link>
             <Link to="/slips/new"
               className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white"
