@@ -1,3 +1,12 @@
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
+// Route disabled — redirects to home. Uncomment the original implementation below when ready.
+export const Route = createFileRoute("/relieving/$id")({
+  beforeLoad: () => { throw redirect({ to: "/" }); },
+  component: () => null,
+});
+
+/* ORIGINAL IMPLEMENTATION — uncomment to restore
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -38,3 +47,4 @@ function EditRelievingPage() {
   if (!data) return <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Loading…</div>;
   return <RelievingLetterForm initial={data} />;
 }
+*/
