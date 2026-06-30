@@ -1,3 +1,12 @@
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
+// Route disabled — redirects to home. Uncomment the original implementation below when ready.
+export const Route = createFileRoute("/offers/")({
+  beforeLoad: () => { throw redirect({ to: "/" }); },
+  component: () => null,
+});
+
+/* ORIGINAL IMPLEMENTATION — uncomment to restore
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -121,3 +130,4 @@ function OffersListPage() {
     </div>
   );
 }
+*/

@@ -89,6 +89,7 @@ function SlipsListPage() {
             <span className="text-sm font-medium text-foreground">Salary Slips</span>
           </div>
           <div className="flex items-center gap-2">
+            {/* Navigation disabled — uncomment when ready
             <Link to="/offers"
               className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
               <FileSignature className="h-4 w-4" /> Offer Letters
@@ -110,6 +111,7 @@ function SlipsListPage() {
               style={{ background: "var(--gradient-brand)" }}>
               <Plus className="h-4 w-4" /> New slip
             </Link>
+            */}
           </div>
         </div>
       </div>
@@ -127,7 +129,7 @@ function SlipsListPage() {
         ) : filtered.length === 0 ? (
           <div className="rounded-xl border border-dashed border-border p-10 text-center">
             <p className="text-sm text-muted-foreground">No saved slips yet.</p>
-            <Link to="/slips/new" className="mt-3 inline-block text-sm font-semibold text-primary">Create your first slip →</Link>
+            {/* <Link to="/slips/new" className="mt-3 inline-block text-sm font-semibold text-primary">Create your first slip →</Link> */}
           </div>
         ) : (
           <div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -150,6 +152,7 @@ function SlipsListPage() {
                     <td className="px-4 py-3 text-right tabular-nums font-semibold">{fmtAmount(s)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
+                        {/* Row actions disabled — uncomment when ready
                         <Link to="/slips/$id" params={{ id: s.id }}
                           className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium hover:bg-muted">
                           <Pencil className="h-3.5 w-3.5" /> Edit
@@ -159,6 +162,7 @@ function SlipsListPage() {
                           style={{ background: "var(--gradient-accent)" }}>
                           <Copy className="h-3.5 w-3.5" /> Next month
                         </button>
+                        */}
                         <button onClick={() => onDelete(s.id)}
                           className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10">
                           <Trash2 className="h-3.5 w-3.5" />
