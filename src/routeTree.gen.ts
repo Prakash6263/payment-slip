@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RelievingIndexRouteImport } from './routes/relieving/index'
 import { Route as OffersIndexRouteImport } from './routes/offers/index'
@@ -24,7 +25,15 @@ import { Route as ExperienceNewRouteImport } from './routes/experience/new'
 import { Route as ExperienceIdRouteImport } from './routes/experience/$id'
 import { Route as ConfirmationsNewRouteImport } from './routes/confirmations/new'
 import { Route as ConfirmationsIdRouteImport } from './routes/confirmations/$id'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -100,9 +109,30 @@ const ConfirmationsIdRoute = ConfirmationsIdRouteImport.update({
   path: '/confirmations/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/mcp': typeof McpRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/confirmations/$id': typeof ConfirmationsIdRoute
   '/confirmations/new': typeof ConfirmationsNewRoute
   '/experience/$id': typeof ExperienceIdRoute
@@ -117,9 +147,13 @@ export interface FileRoutesByFullPath {
   '/experience/': typeof ExperienceIndexRoute
   '/offers/': typeof OffersIndexRoute
   '/relieving/': typeof RelievingIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/mcp': typeof McpRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/confirmations/$id': typeof ConfirmationsIdRoute
   '/confirmations/new': typeof ConfirmationsNewRoute
   '/experience/$id': typeof ExperienceIdRoute
@@ -134,10 +168,14 @@ export interface FileRoutesByTo {
   '/experience': typeof ExperienceIndexRoute
   '/offers': typeof OffersIndexRoute
   '/relieving': typeof RelievingIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/mcp': typeof McpRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/confirmations/$id': typeof ConfirmationsIdRoute
   '/confirmations/new': typeof ConfirmationsNewRoute
   '/experience/$id': typeof ExperienceIdRoute
@@ -152,11 +190,15 @@ export interface FileRoutesById {
   '/experience/': typeof ExperienceIndexRoute
   '/offers/': typeof OffersIndexRoute
   '/relieving/': typeof RelievingIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/mcp'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/confirmations/$id'
     | '/confirmations/new'
     | '/experience/$id'
@@ -171,9 +213,13 @@ export interface FileRouteTypes {
     | '/experience/'
     | '/offers/'
     | '/relieving/'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/mcp'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/confirmations/$id'
     | '/confirmations/new'
     | '/experience/$id'
@@ -188,9 +234,13 @@ export interface FileRouteTypes {
     | '/experience'
     | '/offers'
     | '/relieving'
+    | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
+    | '/mcp'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/confirmations/$id'
     | '/confirmations/new'
     | '/experience/$id'
@@ -205,10 +255,14 @@ export interface FileRouteTypes {
     | '/experience/'
     | '/offers/'
     | '/relieving/'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  McpRoute: typeof McpRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ConfirmationsIdRoute: typeof ConfirmationsIdRoute
   ConfirmationsNewRoute: typeof ConfirmationsNewRoute
   ExperienceIdRoute: typeof ExperienceIdRoute
@@ -223,10 +277,18 @@ export interface RootRouteChildren {
   ExperienceIndexRoute: typeof ExperienceIndexRoute
   OffersIndexRoute: typeof OffersIndexRoute
   RelievingIndexRoute: typeof RelievingIndexRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -332,11 +394,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfirmationsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  McpRoute: McpRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ConfirmationsIdRoute: ConfirmationsIdRoute,
   ConfirmationsNewRoute: ConfirmationsNewRoute,
   ExperienceIdRoute: ExperienceIdRoute,
@@ -351,6 +438,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperienceIndexRoute: ExperienceIndexRoute,
   OffersIndexRoute: OffersIndexRoute,
   RelievingIndexRoute: RelievingIndexRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
