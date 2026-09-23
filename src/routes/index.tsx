@@ -89,7 +89,6 @@ function SlipsListPage() {
             <span className="text-sm font-medium text-foreground">Salary Slips</span>
           </div>
           <div className="flex items-center gap-2">
-            {/* Navigation disabled — uncomment when ready
             <Link to="/offers"
               className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
               <FileSignature className="h-4 w-4" /> Offer Letters
@@ -129,7 +128,7 @@ function SlipsListPage() {
         ) : filtered.length === 0 ? (
           <div className="rounded-xl border border-dashed border-border p-10 text-center">
             <p className="text-sm text-muted-foreground">No saved slips yet.</p>
-            {/* <Link to="/slips/new" className="mt-3 inline-block text-sm font-semibold text-primary">Create your first slip →</Link> */}
+            <Link to="/slips/new" className="mt-3 inline-block text-sm font-semibold text-primary">Create your first slip →</Link>
           </div>
         ) : (
           <div className="overflow-hidden rounded-xl border border-border bg-card">
