@@ -110,7 +110,6 @@ function SlipsListPage() {
               style={{ background: "var(--gradient-brand)" }}>
               <Plus className="h-4 w-4" /> New slip
             </Link>
-            */}
           </div>
         </div>
       </div>
@@ -151,7 +150,6 @@ function SlipsListPage() {
                     <td className="px-4 py-3 text-right tabular-nums font-semibold">{fmtAmount(s)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
-                        {/* Row actions disabled — uncomment when ready
                         <Link to="/slips/$id" params={{ id: s.id }}
                           className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium hover:bg-muted">
                           <Pencil className="h-3.5 w-3.5" /> Edit
