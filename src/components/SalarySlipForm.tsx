@@ -419,7 +419,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
                 <span className="text-white/80">Month:</span>
                 {(() => {
                   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-                  const YEARS = [2026, 2027, 2028, 2029, 2030];
+                  const YEARS = [2025, 2026, 2027, 2028, 2029, 2030];
                   const parts = month.trim().split(/\s+/);
                   const selMonth = MONTHS.includes(parts[0]) ? parts[0] : "";
                   const selYear = parts[1] && YEARS.includes(Number(parts[1])) ? parts[1] : "";
