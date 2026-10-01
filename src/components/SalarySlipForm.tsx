@@ -571,6 +571,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         className="flex-1 border-b border-dashed border-border/80 bg-transparent px-1 py-1 text-sm text-foreground outline-none transition-colors focus:border-primary print:border-solid print:border-foreground/40"
       />
+      <span aria-hidden="true" className="print-value min-w-0 flex-1 border-b border-dashed border-border/80 px-1 py-1 text-sm text-foreground">{value || "\u00a0"}</span>
     </label>
   );
 }
@@ -608,14 +609,17 @@ function SlipTable({
         {rows.map((r) => (
           <li key={r.key} className="flex items-center justify-between gap-3 px-4 py-2">
             <span className="text-sm text-foreground/90">{r.label}</span>
-            <input
-              type="number"
-              inputMode="decimal"
-              value={values[r.key] || ""}
-              onChange={(e) => onChange(r.key, e.target.value)}
-              placeholder="0.00"
-              className="w-28 rounded border border-transparent bg-muted/60 px-2 py-1 text-right text-sm tabular-nums outline-none transition-colors focus:border-primary focus:bg-card print:bg-transparent"
-            />
+            <div className="w-28 shrink-0">
+              <input
+                type="number"
+                inputMode="decimal"
+                value={values[r.key] || ""}
+                onChange={(e) => onChange(r.key, e.target.value)}
+                placeholder="0.00"
+                className="w-full rounded border border-transparent bg-muted/60 px-2 py-1 text-right text-sm tabular-nums outline-none transition-colors focus:border-primary focus:bg-card"
+              />
+              <span aria-hidden="true" className="print-value w-full rounded bg-muted/60 px-2 py-1 text-right text-sm tabular-nums text-foreground">{values[r.key] || "\u00a0"}</span>
+            </div>
           </li>
         ))}
       </ul>
