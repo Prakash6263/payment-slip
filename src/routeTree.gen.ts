@@ -9,99 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as RelievingIndexRouteImport } from './routes/relieving/index'
-import { Route as OffersIndexRouteImport } from './routes/offers/index'
-import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
-import { Route as ConfirmationsIndexRouteImport } from './routes/confirmations/index'
-import { Route as SlipsNewRouteImport } from './routes/slips/new'
-import { Route as SlipsIdRouteImport } from './routes/slips/$id'
-import { Route as RelievingNewRouteImport } from './routes/relieving/new'
-import { Route as RelievingIdRouteImport } from './routes/relieving/$id'
-import { Route as OffersNewRouteImport } from './routes/offers/new'
-import { Route as OffersIdRouteImport } from './routes/offers/$id'
-import { Route as ExperienceNewRouteImport } from './routes/experience/new'
-import { Route as ExperienceIdRouteImport } from './routes/experience/$id'
-import { Route as ConfirmationsNewRouteImport } from './routes/confirmations/new'
-import { Route as ConfirmationsIdRouteImport } from './routes/confirmations/$id'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as ConfirmationsIndexRouteImport } from './routes/confirmations/index'
+import { Route as ConfirmationsIdRouteImport } from './routes/confirmations/$id'
+import { Route as ConfirmationsNewRouteImport } from './routes/confirmations/new'
+import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
+import { Route as ExperienceIdRouteImport } from './routes/experience/$id'
+import { Route as ExperienceNewRouteImport } from './routes/experience/new'
+import { Route as OffersIndexRouteImport } from './routes/offers/index'
+import { Route as OffersIdRouteImport } from './routes/offers/$id'
+import { Route as OffersNewRouteImport } from './routes/offers/new'
+import { Route as RelievingIndexRouteImport } from './routes/relieving/index'
+import { Route as RelievingIdRouteImport } from './routes/relieving/$id'
+import { Route as RelievingNewRouteImport } from './routes/relieving/new'
+import { Route as SlipsIdRouteImport } from './routes/slips/$id'
+import { Route as SlipsNewRouteImport } from './routes/slips/new'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RelievingIndexRoute = RelievingIndexRouteImport.update({
-  id: '/relieving/',
-  path: '/relieving/',
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OffersIndexRoute = OffersIndexRouteImport.update({
-  id: '/offers/',
-  path: '/offers/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExperienceIndexRoute = ExperienceIndexRouteImport.update({
-  id: '/experience/',
-  path: '/experience/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ConfirmationsIndexRoute = ConfirmationsIndexRouteImport.update({
   id: '/confirmations/',
   path: '/confirmations/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SlipsNewRoute = SlipsNewRouteImport.update({
-  id: '/slips/new',
-  path: '/slips/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SlipsIdRoute = SlipsIdRouteImport.update({
-  id: '/slips/$id',
-  path: '/slips/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RelievingNewRoute = RelievingNewRouteImport.update({
-  id: '/relieving/new',
-  path: '/relieving/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RelievingIdRoute = RelievingIdRouteImport.update({
-  id: '/relieving/$id',
-  path: '/relieving/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OffersNewRoute = OffersNewRouteImport.update({
-  id: '/offers/new',
-  path: '/offers/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OffersIdRoute = OffersIdRouteImport.update({
-  id: '/offers/$id',
-  path: '/offers/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExperienceNewRoute = ExperienceNewRouteImport.update({
-  id: '/experience/new',
-  path: '/experience/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExperienceIdRoute = ExperienceIdRouteImport.update({
-  id: '/experience/$id',
-  path: '/experience/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfirmationsNewRoute = ConfirmationsNewRouteImport.update({
-  id: '/confirmations/new',
-  path: '/confirmations/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfirmationsIdRoute = ConfirmationsIdRouteImport.update({
@@ -109,18 +61,66 @@ const ConfirmationsIdRoute = ConfirmationsIdRouteImport.update({
   path: '/confirmations/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const ConfirmationsNewRoute = ConfirmationsNewRouteImport.update({
+  id: '/confirmations/new',
+  path: '/confirmations/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienceIndexRoute = ExperienceIndexRouteImport.update({
+  id: '/experience/',
+  path: '/experience/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienceIdRoute = ExperienceIdRouteImport.update({
+  id: '/experience/$id',
+  path: '/experience/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienceNewRoute = ExperienceNewRouteImport.update({
+  id: '/experience/new',
+  path: '/experience/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OffersIndexRoute = OffersIndexRouteImport.update({
+  id: '/offers/',
+  path: '/offers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OffersIdRoute = OffersIdRouteImport.update({
+  id: '/offers/$id',
+  path: '/offers/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OffersNewRoute = OffersNewRouteImport.update({
+  id: '/offers/new',
+  path: '/offers/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelievingIndexRoute = RelievingIndexRouteImport.update({
+  id: '/relieving/',
+  path: '/relieving/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelievingIdRoute = RelievingIdRouteImport.update({
+  id: '/relieving/$id',
+  path: '/relieving/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelievingNewRoute = RelievingNewRouteImport.update({
+  id: '/relieving/new',
+  path: '/relieving/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlipsIdRoute = SlipsIdRouteImport.update({
+  id: '/slips/$id',
+  path: '/slips/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlipsNewRoute = SlipsNewRouteImport.update({
+  id: '/slips/new',
+  path: '/slips/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -282,13 +282,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -296,102 +289,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/relieving/': {
-      id: '/relieving/'
-      path: '/relieving'
-      fullPath: '/relieving/'
-      preLoaderRoute: typeof RelievingIndexRouteImport
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/offers/': {
-      id: '/offers/'
-      path: '/offers'
-      fullPath: '/offers/'
-      preLoaderRoute: typeof OffersIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experience/': {
-      id: '/experience/'
-      path: '/experience'
-      fullPath: '/experience/'
-      preLoaderRoute: typeof ExperienceIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirmations/': {
-      id: '/confirmations/'
-      path: '/confirmations'
-      fullPath: '/confirmations/'
-      preLoaderRoute: typeof ConfirmationsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/slips/new': {
-      id: '/slips/new'
-      path: '/slips/new'
-      fullPath: '/slips/new'
-      preLoaderRoute: typeof SlipsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/slips/$id': {
-      id: '/slips/$id'
-      path: '/slips/$id'
-      fullPath: '/slips/$id'
-      preLoaderRoute: typeof SlipsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/relieving/new': {
-      id: '/relieving/new'
-      path: '/relieving/new'
-      fullPath: '/relieving/new'
-      preLoaderRoute: typeof RelievingNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/relieving/$id': {
-      id: '/relieving/$id'
-      path: '/relieving/$id'
-      fullPath: '/relieving/$id'
-      preLoaderRoute: typeof RelievingIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/offers/new': {
-      id: '/offers/new'
-      path: '/offers/new'
-      fullPath: '/offers/new'
-      preLoaderRoute: typeof OffersNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/offers/$id': {
-      id: '/offers/$id'
-      path: '/offers/$id'
-      fullPath: '/offers/$id'
-      preLoaderRoute: typeof OffersIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experience/new': {
-      id: '/experience/new'
-      path: '/experience/new'
-      fullPath: '/experience/new'
-      preLoaderRoute: typeof ExperienceNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experience/$id': {
-      id: '/experience/$id'
-      path: '/experience/$id'
-      fullPath: '/experience/$id'
-      preLoaderRoute: typeof ExperienceIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirmations/new': {
-      id: '/confirmations/new'
-      path: '/confirmations/new'
-      fullPath: '/confirmations/new'
-      preLoaderRoute: typeof ConfirmationsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirmations/$id': {
-      id: '/confirmations/$id'
-      path: '/confirmations/$id'
-      fullPath: '/confirmations/$id'
-      preLoaderRoute: typeof ConfirmationsIdRouteImport
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.well-known/oauth-protected-resource': {
@@ -401,11 +310,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+    '/confirmations/': {
+      id: '/confirmations/'
+      path: '/confirmations'
+      fullPath: '/confirmations/'
+      preLoaderRoute: typeof ConfirmationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmations/$id': {
+      id: '/confirmations/$id'
+      path: '/confirmations/$id'
+      fullPath: '/confirmations/$id'
+      preLoaderRoute: typeof ConfirmationsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmations/new': {
+      id: '/confirmations/new'
+      path: '/confirmations/new'
+      fullPath: '/confirmations/new'
+      preLoaderRoute: typeof ConfirmationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experience/': {
+      id: '/experience/'
+      path: '/experience'
+      fullPath: '/experience/'
+      preLoaderRoute: typeof ExperienceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experience/$id': {
+      id: '/experience/$id'
+      path: '/experience/$id'
+      fullPath: '/experience/$id'
+      preLoaderRoute: typeof ExperienceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experience/new': {
+      id: '/experience/new'
+      path: '/experience/new'
+      fullPath: '/experience/new'
+      preLoaderRoute: typeof ExperienceNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offers/': {
+      id: '/offers/'
+      path: '/offers'
+      fullPath: '/offers/'
+      preLoaderRoute: typeof OffersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offers/$id': {
+      id: '/offers/$id'
+      path: '/offers/$id'
+      fullPath: '/offers/$id'
+      preLoaderRoute: typeof OffersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offers/new': {
+      id: '/offers/new'
+      path: '/offers/new'
+      fullPath: '/offers/new'
+      preLoaderRoute: typeof OffersNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relieving/': {
+      id: '/relieving/'
+      path: '/relieving'
+      fullPath: '/relieving/'
+      preLoaderRoute: typeof RelievingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relieving/$id': {
+      id: '/relieving/$id'
+      path: '/relieving/$id'
+      fullPath: '/relieving/$id'
+      preLoaderRoute: typeof RelievingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relieving/new': {
+      id: '/relieving/new'
+      path: '/relieving/new'
+      fullPath: '/relieving/new'
+      preLoaderRoute: typeof RelievingNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/slips/$id': {
+      id: '/slips/$id'
+      path: '/slips/$id'
+      fullPath: '/slips/$id'
+      preLoaderRoute: typeof SlipsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/slips/new': {
+      id: '/slips/new'
+      path: '/slips/new'
+      fullPath: '/slips/new'
+      preLoaderRoute: typeof SlipsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
