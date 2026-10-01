@@ -5,7 +5,14 @@ import { OfferLetterForm, type OfferData } from "@/components/OfferLetterForm";
 
 export const Route = createFileRoute("/offers/$id")({
   component: EditOfferPage,
-  head: () => ({ meta: [{ title: "Edit Offer Letter — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Edit Offer Letter — Technorizen" },
+    { name: "description", content: "Update and download a saved Technorizen offer letter." },
+    { property: "og:title", content: "Edit Offer Letter — Technorizen" },
+    { property: "og:description", content: "Update and download a saved Technorizen offer letter." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 function EditOfferPage() {

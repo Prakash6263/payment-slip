@@ -7,7 +7,14 @@ import { Plus, Pencil, Trash2, Home } from "lucide-react";
 
 export const Route = createFileRoute("/relieving/")({
   component: RelievingListPage,
-  head: () => ({ meta: [{ title: "Saved Relieving Letters — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Saved Relieving Letters — Technorizen" },
+    { name: "description", content: "Browse and manage Technorizen employee relieving letters." },
+    { property: "og:title", content: "Saved Relieving Letters — Technorizen" },
+    { property: "og:description", content: "Browse and manage Technorizen employee relieving letters." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 type Row = { id: string; employee_name: string; designation: string; relieving_date: string; updated_at: string; };

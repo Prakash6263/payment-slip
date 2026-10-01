@@ -5,7 +5,14 @@ import { RelievingLetterForm, type RelievingData } from "@/components/RelievingL
 
 export const Route = createFileRoute("/relieving/$id")({
   component: EditRelievingPage,
-  head: () => ({ meta: [{ title: "Edit Relieving Letter — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Edit Relieving Letter — Technorizen" },
+    { name: "description", content: "Update and download a saved Technorizen relieving letter." },
+    { property: "og:title", content: "Edit Relieving Letter — Technorizen" },
+    { property: "og:description", content: "Update and download a saved Technorizen relieving letter." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 function EditRelievingPage() {

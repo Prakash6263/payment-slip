@@ -7,7 +7,14 @@ import { Plus, Pencil, Trash2, FileText } from "lucide-react";
 
 export const Route = createFileRoute("/offers/")({
   component: OffersListPage,
-  head: () => ({ meta: [{ title: "Saved Offer Letters — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Saved Offer Letters — Technorizen" },
+    { name: "description", content: "Browse and manage Technorizen employee offer letters." },
+    { property: "og:title", content: "Saved Offer Letters — Technorizen" },
+    { property: "og:description", content: "Browse and manage Technorizen employee offer letters." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 type Offer = {

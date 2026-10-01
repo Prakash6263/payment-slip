@@ -7,7 +7,14 @@ import { Plus, Pencil, Copy, Trash2, FileSignature, ShieldCheck, LogOut, Award }
 
 export const Route = createFileRoute("/")({
   component: SlipsListPage,
-  head: () => ({ meta: [{ title: "Saved Salary Slips — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Saved Salary Slips — Technorizen" },
+    { name: "description", content: "Browse, search and manage Technorizen employee salary slips." },
+    { property: "og:title", content: "Saved Salary Slips — Technorizen" },
+    { property: "og:description", content: "Browse, search and manage Technorizen employee salary slips." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 type Slip = {
