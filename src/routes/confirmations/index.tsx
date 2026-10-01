@@ -7,7 +7,14 @@ import { Plus, Pencil, Trash2, Home } from "lucide-react";
 
 export const Route = createFileRoute("/confirmations/")({
   component: ConfirmationsListPage,
-  head: () => ({ meta: [{ title: "Saved Confirmation Letters — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Saved Confirmation Letters — Technorizen" },
+    { name: "description", content: "Browse and manage Technorizen employee confirmation letters." },
+    { property: "og:title", content: "Saved Confirmation Letters — Technorizen" },
+    { property: "og:description", content: "Browse and manage Technorizen employee confirmation letters." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 type Row = { id: string; employee_name: string; designation: string; letter_date: string; joining_date: string; updated_at: string; };

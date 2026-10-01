@@ -5,7 +5,14 @@ import { SalarySlipForm, type SlipData } from "@/components/SalarySlipForm";
 
 export const Route = createFileRoute("/slips/$id")({
   component: EditSlipPage,
-  head: () => ({ meta: [{ title: "Edit Salary Slip — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Edit Salary Slip — Technorizen" },
+    { name: "description", content: "Update and download a saved Technorizen salary slip." },
+    { property: "og:title", content: "Edit Salary Slip — Technorizen" },
+    { property: "og:description", content: "Update and download a saved Technorizen salary slip." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 function EditSlipPage() {

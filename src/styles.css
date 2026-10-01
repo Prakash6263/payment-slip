@@ -188,3 +188,37 @@
   -webkit-text-fill-color: currentColor !important;
   opacity: 1 !important;
 }
+
+/* Native number inputs can clip or misplace their text when rasterized or printed.
+   Keep an ordinary text counterpart at the same dimensions for output only. */
+.print-value {
+  display: none;
+}
+
+.export-capture .print-value {
+  display: block;
+}
+
+.export-capture input:has(+ .print-value),
+.export-capture input:has(+ .print-value) + .print-value {
+  box-sizing: border-box;
+}
+
+.export-capture input:has(+ .print-value) {
+  display: none;
+}
+
+@media print {
+  .print-value {
+    display: block;
+  }
+
+  input:has(+ .print-value) {
+    display: none !important;
+  }
+
+  .print-page {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

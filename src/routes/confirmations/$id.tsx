@@ -5,7 +5,14 @@ import { ConfirmationLetterForm, type ConfirmationData } from "@/components/Conf
 
 export const Route = createFileRoute("/confirmations/$id")({
   component: EditConfirmationPage,
-  head: () => ({ meta: [{ title: "Edit Confirmation Letter — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Edit Confirmation Letter — Technorizen" },
+    { name: "description", content: "Update and download a saved Technorizen confirmation letter." },
+    { property: "og:title", content: "Edit Confirmation Letter — Technorizen" },
+    { property: "og:description", content: "Update and download a saved Technorizen confirmation letter." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 function EditConfirmationPage() {

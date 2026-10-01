@@ -7,7 +7,14 @@ import { Plus, Pencil, Trash2, Home } from "lucide-react";
 
 export const Route = createFileRoute("/experience/")({
   component: ExperienceListPage,
-  head: () => ({ meta: [{ title: "Saved Experience Certificates — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Saved Experience Certificates — Technorizen" },
+    { name: "description", content: "Browse and manage Technorizen employee experience certificates." },
+    { property: "og:title", content: "Saved Experience Certificates — Technorizen" },
+    { property: "og:description", content: "Browse and manage Technorizen employee experience certificates." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 type Row = { id: string; employee_name: string; designation: string; joining_date: string; last_working_date: string; tenure: string; updated_at: string; };

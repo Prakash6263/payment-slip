@@ -5,7 +5,14 @@ import { ExperienceCertificateForm, type ExperienceData } from "@/components/Exp
 
 export const Route = createFileRoute("/experience/$id")({
   component: EditExperiencePage,
-  head: () => ({ meta: [{ title: "Edit Experience Certificate — Technorizen" }] }),
+  head: () => ({ meta: [
+    { title: "Edit Experience Certificate — Technorizen" },
+    { name: "description", content: "Update and download a saved Technorizen experience certificate." },
+    { property: "og:title", content: "Edit Experience Certificate — Technorizen" },
+    { property: "og:description", content: "Update and download a saved Technorizen experience certificate." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 function EditExperiencePage() {

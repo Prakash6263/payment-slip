@@ -1,0 +1,1 @@
+- Salary-slip editing uses native inputs, but print and downloaded captures display synchronized text counterparts because browsers can clip input glyphs in print and canvas output.
