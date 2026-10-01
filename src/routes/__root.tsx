@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 
@@ -33,7 +34,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
 
@@ -73,18 +74,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Design and generate custom salary slips and page themes based on company logos and branding." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Design and generate custom salary slips and page themes based on company logos and branding." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Design and generate custom salary slips and page themes based on company logos and branding." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4faaaebd-936d-4a3f-9be3-9ba91a69dc47/id-preview-fe142b44--b90fcb70-d48b-4769-935a-2d8725d3dcfb.lovable.app-1778582845761.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4faaaebd-936d-4a3f-9be3-9ba91a69dc47/id-preview-fe142b44--b90fcb70-d48b-4769-935a-2d8725d3dcfb.lovable.app-1778582845761.png" },
     ],
     links: [
       {
