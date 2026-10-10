@@ -512,15 +512,12 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
               {["Employer Signature", "Employee Signature"].map((s) => (
                 <div key={s} className="text-center">
                   <div className="mx-auto h-px w-3/4 bg-foreground/40" />
-                  <p className="mt-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-foreground">
                     {s}
                   </p>
                 </div>
               ))}
             </div>
-            <p className="mt-10 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              This is a system-generated salary slip — Technorizen
-            </p>
           </section>
         </article>
       </main>
