@@ -518,6 +518,10 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
                 </div>
               ))}
             </div>
+            <p className="mt-8 text-center text-[11px] italic text-muted-foreground">
+              Note: This is a system-generated salary slip and does not require any signature or
+              official stamp.
+            </p>
           </section>
         </article>
       </main>
