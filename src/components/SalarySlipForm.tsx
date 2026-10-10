@@ -427,6 +427,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
                   return (
                     <>
                       <select
+                        aria-label="Salary month"
                         value={selMonth}
                         onChange={(e) => setMonth(`${e.target.value}${selYear ? " " + selYear : ""}`.trim())}
                         className={selectClass}
@@ -434,7 +435,9 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
                         <option value="">Month</option>
                         {MONTHS.map((m) => <option key={m} value={m}>{m}</option>)}
                       </select>
+                      <span aria-hidden="true" className={`print-value ${selectClass}`}>{selMonth || "\u00a0"}</span>
                       <select
+                        aria-label="Salary year"
                         value={selYear}
                         onChange={(e) => setMonth(`${selMonth}${e.target.value ? " " + e.target.value : ""}`.trim())}
                         className={selectClass}
@@ -442,6 +445,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
                         <option value="">Year</option>
                         {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
                       </select>
+                      <span aria-hidden="true" className={`print-value ${selectClass}`}>{selYear || "\u00a0"}</span>
                     </>
                   );
                 })()}

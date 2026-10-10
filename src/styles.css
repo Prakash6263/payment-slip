@@ -199,12 +199,12 @@
   display: block;
 }
 
-.export-capture input:has(+ .print-value),
-.export-capture input:has(+ .print-value) + .print-value {
+.export-capture :is(input, select):has(+ .print-value),
+.export-capture :is(input, select):has(+ .print-value) + .print-value {
   box-sizing: border-box;
 }
 
-.export-capture input:has(+ .print-value) {
+.export-capture :is(input, select):has(+ .print-value) {
   display: none;
 }
 
@@ -213,7 +213,7 @@
     display: block;
   }
 
-  input:has(+ .print-value) {
+  :is(input, select):has(+ .print-value) {
     display: none !important;
   }
 
