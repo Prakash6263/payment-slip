@@ -508,17 +508,7 @@ export function SalarySlipForm({ initial }: { initial?: SlipData }) {
           </Section>
 
           <section className="px-8 pb-10 pt-2">
-            <div className="grid grid-cols-2 gap-8 pt-12">
-              {["Employer Signature", "Employee Signature"].map((s) => (
-                <div key={s} className="text-center">
-                  <div className="mx-auto h-px w-3/4 bg-foreground/40" />
-                  <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-foreground">
-                    {s}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="mt-8 text-center text-[11px] italic text-muted-foreground">
+            <p className="mt-12 text-center text-[11px] italic text-muted-foreground">
               Note: This is a system-generated salary slip and does not require any signature or
               official stamp.
             </p>
