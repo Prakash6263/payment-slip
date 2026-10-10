@@ -47,14 +47,26 @@ export const createExportClone = (source: HTMLElement) => {
     pointerEvents: "none",
     zIndex: "-1",
   });
-  Object.entries(exportTheme).forEach(([k, v]) => wrapper.style.setProperty(k, v));
-  colorAliases.forEach((n) => wrapper.style.setProperty(`--color-${n}`, `var(--${n})`));
   const clone = source.cloneNode(true) as HTMLElement;
   clone.style.width = `${width}px`;
   clone.style.maxWidth = "none";
   clone.classList.add("export-capture");
   wrapper.appendChild(clone);
   document.body.appendChild(wrapper);
+  // Freeze the browser's resolved layout, fonts and colors before html2canvas
+  // creates its iframe. Published CSS can otherwise be unavailable in that
+  // iframe, leaving unstyled inputs and the browser's default serif font.
+  // Resolve after mounting so export-only text counterparts are already active.
+  const elements = [clone, ...Array.from(clone.querySelectorAll<HTMLElement>("*"))];
+  const resolved = elements.map((element) => {
+    const computed = window.getComputedStyle(element);
+    return Array.from(computed).map((property) => [property, computed.getPropertyValue(property)] as const);
+  });
+  elements.forEach((element, index) => {
+    resolved[index].forEach(([property, value]) => {
+      element.style.setProperty(property, value, "important");
+    });
+  });
   return { wrapper, clone };
 };
 

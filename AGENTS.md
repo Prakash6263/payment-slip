@@ -1,1 +1,2 @@
 - Salary-slip editing uses native inputs and month/year selects, but print and downloaded captures display synchronized text counterparts because browsers can clip input glyphs or omit selected options in print and canvas output.
+- All document downloads use the shared export clone with resolved inline browser styles, preserving the visible theme and layout even when stylesheet loading fails in the capture iframe.
