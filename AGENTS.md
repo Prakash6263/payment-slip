@@ -1,1 +1,1 @@
-- Salary-slip editing uses native inputs, but print and downloaded captures display synchronized text counterparts because browsers can clip input glyphs in print and canvas output.
+- Salary-slip editing uses native inputs and month/year selects, but print and downloaded captures display synchronized text counterparts because browsers can clip input glyphs or omit selected options in print and canvas output.
